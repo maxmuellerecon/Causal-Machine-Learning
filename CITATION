@@ -1,0 +1,6 @@
+@Unpublished{causalmachinelearning2023,
+    Title  = {A project for introducing the basic concepts in causal machine learning.},
+    Author = {Max Mueller},
+    Year   = {2023},
+    Url    = {https://github.com/maxmuellerecon/causalmachinelearning}
+}
