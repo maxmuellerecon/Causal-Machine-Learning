@@ -6,7 +6,7 @@ import pandas as pd
 import pickle
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.A_Machine_learning_basics import separate_customers, merge_customers, split_data, plot_profit_by_income, plot_profit_by_region, lower_bound_CI, plot_oos_performance, encode_region
+from causalmachinelearning.data_management.A_Machine_learning_basics import separate_customers, merge_customers, split_data, plot_profit_by_income, plot_profit_by_region, lower_bound_CI, plot_oos_performance, encode_region, specify_gradient_boosting_regressor, predict_net_value
 
 
 def task_separate_customers(
@@ -116,3 +116,52 @@ def task_encode_region(
         regions_to_net = pickle.load(f)
     train_encoded = encode_region(train, regions_to_net)
     train_encoded.to_stata(produces)
+
+
+def task_specify_gradient_boosting_regressor(
+    depends_on= BLD / "python" / "data" / "train_encoded.dta",
+    produces= {
+        "reg_model": BLD / "python" / "models" / "reg_model.pkl",
+        "model_features": BLD / "python" / "data" / "model_features.dta"
+        },
+):
+    """Specify gradient boosting regressor."""
+    train_encoded = pd.read_stata(depends_on)
+    features = ["region", "income", "age"]
+    target = "net_value"
+    model_features, reg_model = specify_gradient_boosting_regressor(train_encoded, 400, 4, 10, 0.01, 'squared_error')
+    model_features.to_stata(produces["model_features"])
+    with open(produces["reg_model"], "wb") as f:
+        pickle.dump(reg_model, f)
+        
+        
+def task_predict_net_value(
+    depends_on={
+        "test": BLD / "python" / "data" / "test.dta",
+        "reg_model": BLD / "python" / "models" / "reg_model.pkl",
+        "train": BLD / "python" / "data" / "train.dta",
+        "regions_to_net": BLD / "python" / "data" / "regions_to_net.pkl",
+        "model_features": BLD / "python" / "data" / "model_features.dta",
+    },
+    produces={
+        "model_policy": BLD / "python" / "data" / "model_policy.dta",
+        "R2_file": BLD / "python" / "model_fit" / "R2.txt"
+    }
+):
+    """Predict net value."""
+    test = pd.read_stata(depends_on["test"])
+    with open(depends_on["reg_model"], "rb") as f:
+        reg_model = pickle.load(f)
+    train = pd.read_stata(depends_on["train"])
+    regions_to_net = pd.read_pickle(depends_on["regions_to_net"])
+    model_features = pd.read_stata(depends_on["model_features"])
+    model_policy, Train_R2, Test_R2 = predict_net_value(train, test, reg_model, regions_to_net, model_features)
+    model_policy.to_stata(produces["model_policy"])
+    # Save Train_R2 and Test_R2 to a text file
+    with open(produces["R2_file"], "w") as txt_file:
+        txt_file.write(f"R2_Train: {Train_R2}\n")
+        txt_file.write(f"R2 Test: {Test_R2}\n")
+
+        
+        
+        

@@ -16,7 +16,8 @@ import os
 from matplotlib import pyplot as plt
 from matplotlib import style
 style.use("ggplot")
-
+pd.options.mode.chained_assignment = None 
+ 
 ###################A.1 Cross Validation##############################################
 
 #Separate the good customers from the bad customers
@@ -126,98 +127,51 @@ def plot_oos_performance(rawtest, regions):
 
 #Encode the region variable
 def encode_region(df, regions_to_net):
-    df = df.drop(columns="level_0")
+    # Check if "level_0" exists before trying to drop it
+    if "level_0" in df.columns:
+        df = df.drop(columns="level_0")
     df['region'] = df['region'].map(regions_to_net)
     return df
 
-# def specify_gradient_boosting_regressor(df, n_estimators, max_depth, min_samples_split, learning_rate, loss):
-#     """Run Gradient Boosting Regressor on the training data and predict the net value on the test data
+def specify_gradient_boosting_regressor(df, n_estimators, max_depth, min_samples_split, learning_rate, loss):
+    """Run Gradient Boosting Regressor on the training data and predict the net value on the test data
 
-#     Args:
-#         df (DataFrame): Training data
-#         n_estimators (int): The number of boosting stages to perform
-#         max_depth (int): Maximum depth of the individual regression estimators
-#         min_samples_split (int): The minimum number of samples required to split an internal node
-#         learning_rate (float): Learning rate shrinks the contribution of each tree by learning_rate
-#         loss (str): loss function to be optimized
+    Args:
+        df (DataFrame): Training data
+        n_estimators (int): The number of boosting stages to perform
+        max_depth (int): Maximum depth of the individual regression estimators
+        min_samples_split (int): The minimum number of samples required to split an internal node
+        learning_rate (float): Learning rate shrinks the contribution of each tree by learning_rate
+        loss (str): loss function to be optimized
     
-#     Returns:
-#         float: R2 score of the model
-#     """
-#     model_params = {'n_estimators': n_estimators,
-#                     'max_depth': max_depth,
-#                     'min_samples_split': min_samples_split,
-#                     'learning_rate': learning_rate,
-#                     'loss': loss}
-#     features = ["region", "income", "age"]
-#     target = "net_value"
-#     np.random.seed(123)
-#     reg = ensemble.GradientBoostingRegressor(**model_params)
-#     # fit model on the training set
-#     encoded_train = df[features]
-#     reg.fit(encoded_train, df[target]);
-#     return features, target, encoded_train, reg
-
-# #Train the model
-# features, target, encoded_train, reg = specify_gradient_boosting_regressor(train_encoded, 400, 4, 10, 0.01, 'squared_error')
+    Returns:
+        float: R2 score of the model
+    """
+    model_params = {'n_estimators': n_estimators,
+                    'max_depth': max_depth,
+                    'min_samples_split': min_samples_split,
+                    'learning_rate': learning_rate,
+                    'loss': loss}
+    features = ["region", "income", "age"]
+    target = "net_value"
+    np.random.seed(123)
+    reg = ensemble.GradientBoostingRegressor(**model_params)
+    # fit model on the training set
+    model_features = df[features]
+    reg.fit(model_features, df[target]);
+    return model_features, reg
 
 
-# #Predict the net value
-# train_pred = (encoded_train.assign(predictions=reg.predict(encoded_train[features])))
-# #Print the R2 score, for the testing data, we need to replace regions integers with regions_to_net (pipe)
-# print("Train R2: ", r2_score(y_true=train[target], y_pred=train_pred["predictions"]))
-# print("Test R2: ", r2_score(y_true=test[target], y_pred=reg.predict(test[features].pipe(encode_region))))
-
-# #Assign predictions to test data
-# test = encode_region(test)
-# model_policy = test.assign(predictions=reg.predict(test[features]))
-
-# #Plot the predictions
-# def plot_prediction_quantiles(raw, n_bands):
-#     """Plot the predictions"""
-#     plt.figure(figsize=(12,6))   
-#     bands = [f"band_{b}" for b in range(1,n_bands+1)]
-#     np.random.seed(123)
-#     model_plot = sns.barplot(data=raw.assign(model_band = pd.qcut(raw["predictions"], q=n_bands)),       #pd.qcut create quantiles of a column, here from predictions
-#                          x="model_band", y="net_value")
-#     plt.title("Profitability by Model Prediction Quantiles")
-#     plt.xticks(rotation=70)
-#     plt.savefig(os.path.join(BLDFIG, "01_4_pred_quantiles.png"))
-#     return plt.show()
-
-# plot_prediction_quantiles(model_policy, 50)
-
-# #Plot the comparison between regional and model policy
-# def plot_comparison(raw):
-#     """Plot the comparison between regional and model policy"""
-#     plt.figure(figsize=(10,6))
-#     model_plot_df = (raw[raw["predictions"]>0])
-#     sns.histplot(data=model_plot_df, x="net_value", color="C2", label="model_policy")
-#     raw['region'] = raw['region'].map({v: k for k, v in regions_to_net.items()})            #Replace the values in the region column with the keys from regions_to_net
-#     region_plot_df = (raw[raw["region"].isin(regions_to_invest.keys())])
-#     sns.histplot(data=region_plot_df, x="net_value", color="C1", label="region_policy")
-#     plt.title("Model Net Income: %.2f;    Region Policy Net Income %.2f." % 
-#           (model_plot_df["net_value"].sum() / test.shape[0],
-#            region_plot_df["net_value"].sum() / test.shape[0]))
-#     plt.legend();
-#     plt.savefig(os.path.join(BLDFIG, "01_5_comparison.png"))
-#     return plt.show()
-
-# plot_comparison(model_policy)
-# #The model policy is better than the regional policy, but only marginally
-
-# #Thresholding, ergo checking out the bins
-# def model_binner(prediction_column, bins):
-#     """Swap binary outcome(predictions > 0) with a continuous decision along the bins)"""
-#     # find the bins according to the training set
-#     bands = pd.qcut(prediction_column, q=bins, retbins=True)[1]
-#     def binner_function(prediction_column):
-#         return np.digitize(prediction_column, bands)
-#     return binner_function
-    
-# # train the binning function
-# binner_fn = model_binner(train_pred["predictions"], 20)
-
-# # apply the binning, most profitable bins are 19 and 20, from extensive to intensive margin, binary decision to continuous decision
-# model_band = model_policy.assign(bands = binner_fn(model_policy["predictions"]))
-# model_band.head()
+#Predict the net value
+def predict_net_value(raw_train, raw_test, reg, regions_to_net, model_features):
+    """Predict the net value on the test data and calculate the R2 score"""
+    features = ["region", "income", "age"]
+    target = "net_value"
+    train_pred = (model_features.assign(predictions=reg.predict(model_features[features])))
+    #Print the R2 score, for the testing data, we need to replace regions integers with regions_to_net (pipe)
+    Train_R2 = r2_score(y_true=raw_train[target], y_pred=train_pred["predictions"])
+    Test_R2 = r2_score(y_true=raw_test[target], y_pred=reg.predict(raw_test[features].pipe(encode_region, regions_to_net)))
+    #Assign predictions to test data
+    test = encode_region(raw_test, regions_to_net)
+    model_policy = test.assign(predictions=reg.predict(test[features]))
+    return model_policy, Train_R2, Test_R2
