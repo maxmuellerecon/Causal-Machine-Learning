@@ -25,8 +25,8 @@ However, this repository is also a starting point for people interested in causa
 
 The class is structured as follows: \
 A. Machine Learning Basics\
-    A.1. Cross Validation \
-    A.2. Motivating Example: Gradient Boosting Regressor \
+&nbsp;&nbsp; A.1. Cross Validation \
+&nbsp;&nbsp; A.2. Motivating Example: Gradient Boosting Regressor \
 B. Ridge and Lasso \
     B.1. Linear Regression \
     B.2. Ridge Regression \
@@ -71,7 +71,7 @@ This repository is based on the materials of:
 - Causal Inference for the Brave and True (Matheus Facure Alves, 2022)
 - Causal Analysis (Martin Huber, 2023)
 
-It also relies heavily on the following papers:
+It also relies on the following papers:
 - Chernozhukov, Victor, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, and Whitney Newey. 2017. "Double/Debiased/Neyman Machine Learning of Treatment Effects." American Economic Review, 107 (5): 261-65.
 - Susan Athey, Guido W. Imbens. August 2019. "Machine Learning Methods That Economists Should Know About" Annual Review of Economics  Vol. 11 Pages 685–725
 
