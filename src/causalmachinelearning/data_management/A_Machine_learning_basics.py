@@ -122,7 +122,7 @@ def plot_oos_performance(rawtest, regions):
 
 
 
-# ###########################A.2 Gradient Boosting Regressor#############################
+############################A.2 Motivating Example: Gradient Boosting Regressor#############################
 
 
 #Encode the region variable

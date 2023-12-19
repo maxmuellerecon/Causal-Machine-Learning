@@ -1,4 +1,4 @@
-#tasks for 01_Machine Learning basics  
+#Task file for A_Machine Learning basics  
 
 from pathlib import Path
 from pytask import task
@@ -11,7 +11,7 @@ from causalmachinelearning.data_management.A_Machine_learning_basics import sepa
 
 def task_separate_customers(
     depends_on=SRC / "data" / "customer_transactions.csv",
-    produces=BLD / "python" / "data" / "profitable.dta",
+    produces=BLD / "python" / "Lesson_A" / "data" / "profitable.dta",
 ):
     """Separate customers."""
     customer_transactions = pd.read_csv(depends_on)
@@ -21,12 +21,12 @@ def task_separate_customers(
 
 
 merge_data_deps = {
-    "profitable": BLD / "python" / "data" / "profitable.dta",
+    "profitable": BLD / "python" / "Lesson_A" / "data" / "profitable.dta",
     "customer_features": SRC / "data" / "customer_features.csv",
 }
 def task_merge_customers(
     depends_on=merge_data_deps,
-    produces=BLD / "python" / "data" / "customer_features_merged.dta",
+    produces=BLD / "python" / "Lesson_A" / "data" / "customer_features_merged.dta",
 ):
     """Merge customers."""
     profitable = pd.read_stata(depends_on["profitable"])
@@ -37,11 +37,11 @@ def task_merge_customers(
 
 
 split_data_out = {
-    "train": BLD / "python" / "data" / "train.dta",
-    "test": BLD / "python" / "data" / "test.dta",
+    "train": BLD / "python" / "Lesson_A" / "data" / "train.dta",
+    "test": BLD / "python" / "Lesson_A" / "data" / "test.dta",
 }
 def task_split_data(
-    depends_on=BLD / "python" / "data" / "customer_features_merged.dta",
+    depends_on=BLD / "python" / "Lesson_A" / "data" / "customer_features_merged.dta",
     produces=split_data_out,
 ):
     """Split data into test and training."""
@@ -52,8 +52,8 @@ def task_split_data(
     
 
 def task_plot_profit_by_income(
-    depends_on= BLD / "python" / "data" / "train.dta",
-    produces=BLD / "python" / "figures" / "profit_by_income.png",
+    depends_on= BLD / "python" / "Lesson_A" / "data" / "train.dta",
+    produces=BLD / "python" / "Lesson_A" / "figures" / "profit_by_income.png",
 ):
     """Plot profit by income."""
     train = pd.read_stata(depends_on)
@@ -62,8 +62,8 @@ def task_plot_profit_by_income(
 
 
 def task_plot_profit_by_region(
-    depends_on= BLD / "python" / "data" / "train.dta",
-    produces=BLD / "python" / "figures" / "profit_by_region_plot.png",
+    depends_on= BLD / "python" / "Lesson_A" / "data" / "train.dta",
+    produces=BLD / "python" / "Lesson_A" / "figures" / "profit_by_region_plot.png",
 ):
     """Plot profit by region."""
     train = pd.read_stata(depends_on)
@@ -72,11 +72,11 @@ def task_plot_profit_by_region(
     
 
 lower_bound_CI_out = {
-    "regions_to_net": BLD / "python" / "data" / "regions_to_net.pkl",
-    "regions_to_invest": BLD / "python" / "data" / "regions_to_invest.pkl",
+    "regions_to_net": BLD / "python" / "Lesson_A" / "data" / "regions_to_net.pkl",
+    "regions_to_invest": BLD / "python" / "Lesson_A" / "data" / "regions_to_invest.pkl",
 }
 def task_lower_bound_CI(
-    depends_on= BLD / "python" / "data" / "train.dta",
+    depends_on= BLD / "python" / "Lesson_A" / "data" / "train.dta",
     produces=lower_bound_CI_out,
 ):
     """Filter regions, that are significantly profitable."""
@@ -90,10 +90,10 @@ def task_lower_bound_CI(
 
 def task_plot_oos_performance(
     depends_on={
-        "test": BLD / "python" / "data" / "test.dta",
-        "regions_to_invest": BLD / "python" / "data" / "regions_to_invest.pkl"
+        "test": BLD / "python" / "Lesson_A" / "data" / "test.dta",
+        "regions_to_invest": BLD / "python" / "Lesson_A" / "data" / "regions_to_invest.pkl"
         },
-    produces= BLD / "python" / "figures" / "oos_performance.png",
+    produces= BLD / "python" / "Lesson_A" / "figures" / "oos_performance.png",
 ):
     """Plot out of sample performance."""
     test = pd.read_stata(depends_on["test"])
@@ -105,10 +105,10 @@ def task_plot_oos_performance(
 
 def task_encode_region(
     depends_on={
-        "train": BLD / "python" / "data" / "train.dta",
-        "regions_to_net": BLD / "python" / "data" / "regions_to_net.pkl"
+        "train": BLD / "python" / "Lesson_A" / "data" / "train.dta",
+        "regions_to_net": BLD / "python" / "Lesson_A" / "data" / "regions_to_net.pkl"
         },
-    produces= BLD / "python" / "data" / "train_encoded.dta",
+    produces= BLD / "python" / "Lesson_A" / "data" / "train_encoded.dta",
 ):
     """Plot out of sample performance."""
     train = pd.read_stata(depends_on["train"])
@@ -119,10 +119,10 @@ def task_encode_region(
 
 
 def task_specify_gradient_boosting_regressor(
-    depends_on= BLD / "python" / "data" / "train_encoded.dta",
+    depends_on= BLD / "python" / "Lesson_A" / "data" / "train_encoded.dta",
     produces= {
-        "reg_model": BLD / "python" / "models" / "reg_model.pkl",
-        "model_features": BLD / "python" / "data" / "model_features.dta"
+        "reg_model": BLD / "python" / "Lesson_A" / "models" / "reg_model.pkl",
+        "model_features": BLD / "python"/ "Lesson_A" / "data" / "model_features.dta"
         },
 ):
     """Specify gradient boosting regressor."""
@@ -137,15 +137,15 @@ def task_specify_gradient_boosting_regressor(
         
 def task_predict_net_value(
     depends_on={
-        "test": BLD / "python" / "data" / "test.dta",
-        "reg_model": BLD / "python" / "models" / "reg_model.pkl",
-        "train": BLD / "python" / "data" / "train.dta",
-        "regions_to_net": BLD / "python" / "data" / "regions_to_net.pkl",
-        "model_features": BLD / "python" / "data" / "model_features.dta",
+        "test": BLD / "python" / "Lesson_A" / "data" / "test.dta",
+        "reg_model": BLD / "python" / "Lesson_A" / "models" / "reg_model.pkl",
+        "train": BLD / "python" / "Lesson_A" / "data" / "train.dta",
+        "regions_to_net": BLD / "python" / "Lesson_A" / "data" / "regions_to_net.pkl",
+        "model_features": BLD / "python" / "Lesson_A" / "data" / "model_features.dta",
     },
     produces={
-        "model_policy": BLD / "python" / "data" / "model_policy.dta",
-        "R2_file": BLD / "python" / "model_fit" / "R2.txt"
+        "model_policy": BLD / "python" / "Lesson_A" / "data" / "model_policy.dta",
+        "R2_file": BLD / "python" / "Lesson_A" / "model_fit" / "R2.txt"
     }
 ):
     """Predict net value."""
