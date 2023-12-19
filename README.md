@@ -24,17 +24,23 @@ However, this repository is also a starting point for people interested in causa
 ## Structure
 
 The class is structured as follows: \
+
+Part 1: Introduction to Machine Learning \
+ 
 A. Machine Learning Basics\
 &nbsp;&nbsp; A.1. Cross Validation \
 &nbsp;&nbsp; A.2. Motivating Example: Gradient Boosting Regressor \
 B. Ridge and Lasso \
-    B.1. Linear Regression \
-    B.2. Ridge Regression \
-    B.3. Lasso Regression \
-Extend ML Basics:
-    Random Forests
-    Neural Networks
-    Boosting
+&nbsp;&nbsp; B.1. Linear Regression \
+&nbsp;&nbsp; B.2. Ridge Regression \
+&nbsp;&nbsp; B.3. Lasso Regression \
+C. Neural Networks \
+D. Ensemble Learning \
+&nbsp;&nbsp; D.1 Random Forests \
+&nbsp;&nbsp; D.2 Gradient Boosting \
+
+
+Part 2: Causal Machine Learning \
 
 2. Heterogeneous Treatment Effects \
     2.1 Linear regression analysis \

@@ -18,7 +18,9 @@ dependencies:
   - python-graphviz
   - python=3.11
   - pyyaml
+  - scikit-learn
   - setuptools_scm
   - statsmodels
+  - tensorflow
   - toml
   - pip: [-e ., kaleido, pdbp]

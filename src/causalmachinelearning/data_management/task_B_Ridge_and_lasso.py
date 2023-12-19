@@ -3,7 +3,6 @@
 from pathlib import Path
 from pytask import task
 import pandas as pd
-import pickle
 
 from causalmachinelearning.config import BLD, SRC
 from causalmachinelearning.data_management.B_Ridge_and_lasso import create_data, linear_regression_and_fill_coef_matrix, ridge_regression_and_fill_coef_matrix, lasso_regression_and_fill_coef_matrix
