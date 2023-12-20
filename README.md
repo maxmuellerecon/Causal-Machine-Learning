@@ -35,9 +35,10 @@ B. Ridge and Lasso \
 &nbsp;&nbsp; B.2. Ridge Regression \
 &nbsp;&nbsp; B.3. Lasso Regression \
 C. Neural Networks \
-D. Ensemble Learning \
-&nbsp;&nbsp; D.1. Random Forests \
-&nbsp;&nbsp; D.2. Gradient Boosting 
+D. Decision Trees \
+E. Ensemble Learning \
+&nbsp;&nbsp; E.1. Random Forests \
+&nbsp;&nbsp; E.2. Gradient Boosting 
 
 
 Part 2: Causal Machine Learning 

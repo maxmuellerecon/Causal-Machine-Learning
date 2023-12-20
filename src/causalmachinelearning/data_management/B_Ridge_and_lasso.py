@@ -82,7 +82,7 @@ def linear_regression_and_fill_coef_matrix(data, models_to_plot):
 
 ###################B.2 Ridge Regression##############################################
 #L2 Regularization: Ridge Regression
-#Positive: Ridge regression works well with multicollinearity, includes all of them in model
+#Positive: Ridge regression works well with multicollinearity, includes all of them in model; prevents overfitting
 #Negative: No model selection, all predictors are included in the final model
 
 def ridge_regression(data, predictors, alpha, models_to_plot={}):
