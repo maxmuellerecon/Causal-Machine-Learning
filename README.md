@@ -25,7 +25,7 @@ However, this repository is also a starting point for people interested in causa
 
 The class is structured as follows: 
 
-Part 1: Introduction to Machine Learning 
+##### Part 1: Introduction to Machine Learning 
  
 A. Machine Learning Basics \
 &nbsp;&nbsp; A.1. Cross Validation \
@@ -41,7 +41,7 @@ E. Ensemble Learning \
 &nbsp;&nbsp; E.2 Boosting
 
 
-Part 2: Causal Machine Learning 
+##### Part 2: Causal Machine Learning 
 
 2. Heterogeneous Treatment Effects \
     2.1 Linear regression analysis \
