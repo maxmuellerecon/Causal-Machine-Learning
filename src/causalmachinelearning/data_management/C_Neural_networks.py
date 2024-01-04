@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 from keras.losses import MeanSquaredLogarithmicError
 
 
-####################Vanilla Neural Networks##############################################	
+####################C. Vanilla Neural Networks##############################################	
 #Positive: Non-parametric, can approximate any function, can be used for classification and regression
 #Negative: Can only handle structured data (supervised learning)
 

@@ -43,30 +43,24 @@ E. Ensemble Learning \
 
 ##### Part 2: Causal Machine Learning 
 
-2. Heterogeneous Treatment Effects \
-    2.1 Linear regression analysis \
-    2.2 Sensitivity analysis \
-    2.3 Comparing CATE model to ML prediction model
-(Maybe get rid of this \ 
-    3. Evaluating Causal Models \ 
-    3.1 Random vs. non-random data \
-    3.2 Sensitivity by model band \
-    3.3 Cumulative Sensitivity \
-    3.4 ROC for causal models )
-4. Treatment effect estimators \
-    4.1 From Outcomes to treatment effects \
-    4.2 Continuous treatment effects \
-5. Meta-Learners \
-    5.1 S-learner \
-    5.2 T-learner \
-    5.3 X-learner \
-6. Double ML \
-    6.1 Recap: Frisch-Waugh-Lovell Theorem \
-    6.2 Parametric Double ML ATE \
-    6.3 Parametric Double ML CATE \
-    6.4 Non-parametric Double ML CATE
-7. Diff and Diff and ML
-8. Sythetic Diff in Diff
+F. Heterogeneous Treatment Effects \
+&nbsp;&nbsp; F.1 Linear regression analysis \
+&nbsp;&nbsp; F.2 Sensitivity analysis \
+&nbsp;&nbsp; F.3 Comparing CATE model to ML prediction model \
+G. Treatment effect estimators \
+&nbsp;&nbsp; G.1 From Outcomes to treatment effects \
+&nbsp;&nbsp; G.2 Continuous treatment effects \
+H. Meta-Learners \
+&nbsp;&nbsp; H.1 S-learner \
+&nbsp;&nbsp; H.2 T-learner \
+&nbsp;&nbsp; H.3 X-learner \
+I. Double ML \
+&nbsp;&nbsp; 6.1 Recap: Frisch-Waugh-Lovell Theorem \
+&nbsp;&nbsp; 6.2 Parametric Double ML ATE \
+&nbsp;&nbsp; 6.3 Parametric Double ML CATE \
+&nbsp;&nbsp; 6.4 Non-parametric Double ML CATE
+J. Diff and Diff and ML
+K. Sythetic Diff in Diff
 9. Multi Armed Bandits (https://www.analyticsvidhya.com/blog/2023/02/solving-multi-arm-bandits-with-python/?utm_source=related_WP&utm_medium=https://www.analyticsvidhya.com/blog/2018/09/reinforcement-multi-armed-bandit-scratch-python/)
 
 
