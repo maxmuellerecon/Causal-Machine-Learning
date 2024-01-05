@@ -24,8 +24,7 @@ def task_make_dataset(
     np.save(produces["X"], X)
     np.save(produces["y"], y)
     df.to_csv(produces["df"])
-    np.save(produces["coef"], coef
-)
+    np.save(produces["coef"], coef)
     
 
 def task_decision_tree(

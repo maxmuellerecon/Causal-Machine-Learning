@@ -58,9 +58,9 @@ I. Double ML \
 &nbsp;&nbsp; 6.1 Recap: Frisch-Waugh-Lovell Theorem \
 &nbsp;&nbsp; 6.2 Parametric Double ML ATE \
 &nbsp;&nbsp; 6.3 Parametric Double ML CATE \
-&nbsp;&nbsp; 6.4 Non-parametric Double ML CATE
-J. Diff and Diff and ML
-K. Sythetic Diff in Diff
+&nbsp;&nbsp; 6.4 Non-parametric Double ML CATE \
+J. Diff and Diff and ML \
+K. Sythetic Diff in Diff \
 9. Multi Armed Bandits (https://www.analyticsvidhya.com/blog/2023/02/solving-multi-arm-bandits-with-python/?utm_source=related_WP&utm_medium=https://www.analyticsvidhya.com/blog/2018/09/reinforcement-multi-armed-bandit-scratch-python/)
 
 
