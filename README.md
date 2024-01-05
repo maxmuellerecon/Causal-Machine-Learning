@@ -75,5 +75,5 @@ This repository is based on the materials of:
 It also relies on the following papers:
 - Chernozhukov, Victor, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, and Whitney Newey. 2017. "Double/Debiased/Neyman Machine Learning of Treatment Effects." American Economic Review, 107 (5): 261-65.
 - Susan Athey, Guido W. Imbens. August 2019. "Machine Learning Methods That Economists Should Know About" Annual Review of Economics  Vol. 11 Pages 685–725
-
+- Sören R. Künzel, Jasjeet S. Sekhon, Peter J. Bickel, and Bin Yu. 2019. "Metalearners for estimating heterogeneous treatment effects using machine learning." Proceedings of the National Academy of Sciences, 116 (10): 4156-4165.
 
