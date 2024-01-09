@@ -5,6 +5,7 @@ dependencies:
   - conda-lock
   - ipykernel
   - jupyterlab
+  - linearmodels
   - pandas
   - pip >=21.1
   - plotly>=5.13.0

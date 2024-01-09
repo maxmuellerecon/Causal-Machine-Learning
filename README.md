@@ -60,6 +60,9 @@ I. Double ML \
 &nbsp;&nbsp; I.3 Parametric Double ML CATE \
 &nbsp;&nbsp; I.4 Non-parametric Double ML CATE \
 J. Diff and Diff and ML \
+&nbsp;&nbsp; J.1 J.1 Two-way Fixed Effects \
+&nbsp;&nbsp; J.2 Time Treatment Heterogeneity \
+&nbsp;&nbsp; J.3 Flexible Functional Forms \
 K. Sythetic Diff in Diff \
 9. Multi Armed Bandits (https://www.analyticsvidhya.com/blog/2023/02/solving-multi-arm-bandits-with-python/?utm_source=related_WP&utm_medium=https://www.analyticsvidhya.com/blog/2018/09/reinforcement-multi-armed-bandit-scratch-python/)
 
@@ -76,4 +79,5 @@ It also relies on the following papers:
 - Victor Chernozhukov, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, and Whitney Newey. 2017. "Double/Debiased/Neyman Machine Learning of Treatment Effects." American Economic Review, 107 (5): 261-65.
 - Susan Athey, Guido W. Imbens. August 2019. "Machine Learning Methods That Economists Should Know About" Annual Review of Economics  Vol. 11 Pages 685–725
 - Sören R. Künzel, Jasjeet S. Sekhon, Peter J. Bickel, and Bin Yu. 2019. "Metalearners for estimating heterogeneous treatment effects using machine learning." Proceedings of the National Academy of Sciences, 116 (10): 4156-4165.
-
+- Brantly Callaway, Pedro H.C. Sant’Anna. 2021. "Difference-in-Differences with multiple time periods" Journal of Econometrics. Volume 225, Issue 2.
+- Andrew Goodman-Bacon. 2021 "Difference-in-differences with variation in treatment timing" Journal of Econometrics. Volume 225, Issue 2.
