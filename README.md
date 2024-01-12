@@ -63,8 +63,8 @@ J. Diff and Diff and ML \
 &nbsp;&nbsp; J.1 J.1 Two-way Fixed Effects \
 &nbsp;&nbsp; J.2 Time Treatment Heterogeneity \
 &nbsp;&nbsp; J.3 Flexible Functional Forms \
-K. Sythetic Diff in Diff \
-9. Multi Armed Bandits (https://www.analyticsvidhya.com/blog/2023/02/solving-multi-arm-bandits-with-python/?utm_source=related_WP&utm_medium=https://www.analyticsvidhya.com/blog/2018/09/reinforcement-multi-armed-bandit-scratch-python/)
+K. Synthetic Diff in Diff \
+L. Staggered synthetic diff in diff \
 
 
 
