@@ -11,18 +11,23 @@ from sklearn.linear_model import Ridge, Lasso, LinearRegression
 
 
 ###################B.1 Linear Regression##############################################
-#Create data and plot it
+
 def create_data():
-    """Create data and plot it"""
+    """Create data"""
     x = np.array([i*np.pi/180 for i in range(60,300,4)])
     np.random.seed(10)  #Setting seed for reproducibility
     y = np.sin(x) + np.random.normal(0,0.15,len(x))
     data = pd.DataFrame(np.column_stack([x,y]),columns=['x','y'])
-    plt.plot(data['x'],data['y'],'.')
     for i in range(2,16):  #power of 1 is already there
         colname = 'x_%d'%i      #new var will be x_power
         data[colname] = data['x']**i
-    return data, plt
+    return data
+
+
+def plot_data(data):
+    """Plot data"""
+    plt.plot(data['x'],data['y'],'.')
+    return plt
 
 
 def linear_regression(data, power, models_to_plot):
@@ -138,7 +143,6 @@ def ridge_regression_and_fill_coef_matrix(data):
 #L1 Regularization: Lasso Regression
 #Positive: Lasso regression can be used to select a subset of predictors
 #Negative: Lasso regression (and all regularizations) works poorly when there are high correlations between predictors, selects shrunken coefficients arbitrarily
-
 
 def lasso_regression(data, predictors, alpha, models_to_plot={}):
     """Function for lasso regression"""

@@ -62,7 +62,7 @@ I. Double ML \
 J. Diff and Diff and ML \
 &nbsp;&nbsp; J.1 J.1 Two-way Fixed Effects \
 &nbsp;&nbsp; J.2 Time Treatment Heterogeneity \
-&nbsp;&nbsp; J.3 Flexible Functional Forms \
+&nbsp;&nbsp; J.3 Flexible Functional Forms 
 
 
 ## Credits

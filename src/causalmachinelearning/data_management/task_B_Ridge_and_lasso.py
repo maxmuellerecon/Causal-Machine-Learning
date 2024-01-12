@@ -3,20 +3,29 @@
 import pandas as pd
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.B_Ridge_and_lasso import create_data, linear_regression_and_fill_coef_matrix, ridge_regression_and_fill_coef_matrix, lasso_regression_and_fill_coef_matrix
-
+from causalmachinelearning.data_management.B_Ridge_and_lasso import create_data, plot_data, linear_regression_and_fill_coef_matrix, ridge_regression_and_fill_coef_matrix, lasso_regression_and_fill_coef_matrix
 
 
 def task_create_data(
     produces={
         "data": BLD / "python" / "Lesson_B" / "data" / "data.csv",
-        "plt_data": BLD / "python" / "Lesson_B" / "figures" / "plot_data.png",
     },
 ):
-    """Create data and plot it."""
-    data, plt = create_data()
+    """Create data"""
+    data = create_data()
     data.to_csv(produces["data"])
-    plt.savefig(produces["plt_data"])
+    
+    
+def task_plot_data(
+    depends_on=BLD / "python" / "Lesson_B" / "data" / "data.csv",
+    produces={
+        "plot": BLD / "python" / "Lesson_B" / "figures" / "plot.png",
+    },
+    ):
+    """Plot data."""
+    data = pd.read_csv(depends_on)
+    plot = plot_data(data)
+    plot.savefig(produces["plot"])
 
 
 def task_linear_regression_and_fill_coef_matrix(
