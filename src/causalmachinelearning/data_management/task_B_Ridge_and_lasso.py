@@ -1,7 +1,5 @@
 #Task file for #B_Ridge_and_Lasso
 
-from pathlib import Path
-from pytask import task
 import pandas as pd
 
 from causalmachinelearning.config import BLD, SRC

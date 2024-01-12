@@ -1,25 +1,18 @@
 #A_Machine learning basics
 
 #Import libraries 
-from pathlib import Path
 import pandas as pd
 import numpy as np
 from sklearn import ensemble
 from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
 from sklearn.metrics import r2_score
-from sklearn.model_selection import KFold
-from sklearn.model_selection import cross_val_score
-from sklearn.ensemble import RandomForestClassifier 
 import seaborn as sns
-import os
 from matplotlib import pyplot as plt
 from matplotlib import style
 style.use("ggplot")
 pd.options.mode.chained_assignment = None 
  
 ###################A.1 Cross Validation##############################################
-
 #Separate the good customers from the bad customers
 def separate_customers(raw):
     """Sum up transactions for each customer
@@ -36,9 +29,18 @@ def separate_customers(raw):
                       .sum(axis=1)))
     return profitable
 
+
 #Merge the customer features with the profitable dataset
 def merge_customers(raw, merge_data):
-    """Merge the customer features with the profitable dataset"""
+    """Merge the customer features with the profitable dataset
+    
+    Args:
+        raw (data frame): Passes the raw dataset
+        merge_data (data frame): Passes the customer features dataset
+        
+    Returns:
+        DataFrame: Gives out the final merged dataframe
+    """
     customer_features_merged = (merge_data
                         .merge(raw, on="customer_id"))
     return customer_features_merged
@@ -61,6 +63,9 @@ def plot_profit_by_income(raw, quantiles):
     Args:
         raw (DataFrame): The data for profitablity and income
         quantiles (int): number of quantiles to be created
+        
+    Returns:
+        plot: Plot of the net value by income quantiles
     """
     plt.figure(figsize=(12,6))
     np.random.seed(123) ## seed because the CIs from seaborn uses boostraping for inference
@@ -103,7 +108,6 @@ def lower_bound_CI(raw):
     return regions_to_net, regions_to_invest
 
 
-
 #Check out of sample performance
 def plot_oos_performance(rawtest, regions):
     """Filter regions in test dataset, that are profitable in the training data and plot the average net income in test data
@@ -121,17 +125,15 @@ def plot_oos_performance(rawtest, regions):
     return plt
 
 
-
 ############################A.2 Motivating Example: Gradient Boosting Regressor#############################
-
-
 #Encode the region variable
 def encode_region(df, regions_to_net):
-    # Check if "level_0" exists before trying to drop it
+    """"Encode regions with dictionary, check if "level_0" exists before trying to drop it"""
     if "level_0" in df.columns:
         df = df.drop(columns="level_0")
     df['region'] = df['region'].map(regions_to_net)
     return df
+
 
 def specify_gradient_boosting_regressor(df, n_estimators, max_depth, min_samples_split, learning_rate, loss):
     """Run Gradient Boosting Regressor on the training data and predict the net value on the test data

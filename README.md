@@ -63,9 +63,6 @@ J. Diff and Diff and ML \
 &nbsp;&nbsp; J.1 J.1 Two-way Fixed Effects \
 &nbsp;&nbsp; J.2 Time Treatment Heterogeneity \
 &nbsp;&nbsp; J.3 Flexible Functional Forms \
-K. Synthetic Diff in Diff \
-L. Staggered synthetic diff in diff \
-
 
 
 ## Credits

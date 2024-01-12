@@ -1,7 +1,5 @@
 #Task file for A_Machine Learning basics  
 
-from pathlib import Path
-from pytask import task
 import pandas as pd
 import pickle
 
@@ -19,7 +17,6 @@ def task_separate_customers(
     profitable.to_stata(produces)
 
 
-
 merge_data_deps = {
     "profitable": BLD / "python" / "Lesson_A" / "data" / "profitable.dta",
     "customer_features": SRC / "data" / "customer_features.csv",
@@ -33,7 +30,6 @@ def task_merge_customers(
     customer_features = pd.read_csv(depends_on["customer_features"])
     customer_features_merged = merge_customers(profitable, customer_features)
     customer_features_merged.to_stata(produces)
-
 
 
 split_data_out = {
@@ -127,8 +123,6 @@ def task_specify_gradient_boosting_regressor(
 ):
     """Specify gradient boosting regressor."""
     train_encoded = pd.read_stata(depends_on)
-    features = ["region", "income", "age"]
-    target = "net_value"
     model_features, reg_model = specify_gradient_boosting_regressor(train_encoded, 400, 4, 10, 0.01, 'squared_error')
     model_features.to_stata(produces["model_features"])
     with open(produces["reg_model"], "wb") as f:
@@ -161,7 +155,3 @@ def task_predict_net_value(
     with open(produces["R2_file"], "w") as txt_file:
         txt_file.write(f"R2_Train: {Train_R2}\n")
         txt_file.write(f"R2 Test: {Test_R2}\n")
-
-        
-        
-        
