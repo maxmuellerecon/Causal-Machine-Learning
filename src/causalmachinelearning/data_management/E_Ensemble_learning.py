@@ -44,7 +44,7 @@ def decision_tree(X, y):
 
     Returns:
         tree_model: the fitted model
-        r2: R2 score
+        r2: R2 score - R2_Train is 0.9811014350667862, so it is overfitting
     """
     tree_model = tree.DecisionTreeRegressor(max_depth=5, random_state=None)
     tree_model.fit(X, y)
@@ -53,8 +53,6 @@ def decision_tree(X, y):
     r2 = r2_score(y, y_pred)
     print("R2 Score:", r2)
     return tree_model, r2
-
-#R2_Train is 0.9811014350667862, so it is overfitting
 
 
 def random_forest(X, y):
@@ -65,7 +63,7 @@ def random_forest(X, y):
 
     Returns:
         forest_model: the fitted model
-        r2: R2 score
+        r2: R2 score R2_Train is 0.8649247897434318, we prevent overfitting
     """
     forest_model = RandomForestRegressor(max_depth=5, random_state=None, max_leaf_nodes=5, n_estimators=100)
     forest_model.fit(X, y)
@@ -73,13 +71,10 @@ def random_forest(X, y):
     r2 = r2_score(y, y_pred)
     return forest_model, r2
 
-#R2_Train is 0.8649247897434318, we prevent overfitting
-
 
 ####################E.2 Boosting ##############################################
 #As an example for a boosting technique, we will use Gradient Boosting in random forests
 #Boosting: sequential ensemble method, where we use errors of the previous weak lerner to train the next weak learner
-
 
 def load_and_split_data():
     """Load and split data into train and test sets"""
@@ -91,7 +86,16 @@ def load_and_split_data():
 
 
 def standardize_data(X_train, X_test):
-    # Standardize the dataset
+    """ Standardize the dataset with StandardScaler
+    
+    Args:
+        X_train (np.array): features of training set
+        X_test (np.array): features of test set
+    
+    Returns:
+        X_train_std (np.array): standardized features of training set
+        X_test_std (np.array): standardized features of test set
+    """
     sc = StandardScaler()
     X_train_std = sc.fit_transform(X_train)
     X_test_std = sc.transform(X_test)
@@ -99,7 +103,18 @@ def standardize_data(X_train, X_test):
 
 
 def gradient_boosting_and_accuracy(X_train_std, y_train, X_test_std, y_test):
-    # Hyperparameters for GradientBoostingRegressor
+    """Tune Hyperparameters for GradientBoostingRegressor and calculate MSE and R2 score
+    Args:
+        X_train_std (np.array): standardized features of training set
+        y_train (np.array): target of training set
+        X_test_std (np.array): standardized features of test set
+        y_test (np.array): target of test set
+        
+    Returns:
+        gbr: the fitted model
+        mse: mean squared error
+        r2: R2 score
+    """
     gbr_params = {'n_estimators': 1000,
             'max_depth': 3,
             'min_samples_split': 5,
@@ -118,7 +133,7 @@ def gradient_boosting_and_accuracy(X_train_std, y_train, X_test_std, y_test):
 
 
 def determine_feature_importance(gbr, X_test_std, y_test):
-    # Get Feature importance data using feature_importances_ attribute
+    """Get Feature importance data using feature_importances_ attribute and plot it"""
     ch = fetch_california_housing()
     feature_importance = gbr.feature_importances_
     sorted_idx = np.argsort(feature_importance)

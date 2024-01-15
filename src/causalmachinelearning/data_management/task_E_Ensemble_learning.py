@@ -1,9 +1,5 @@
 #Task for for E_Ensemble_learning
 
-
-from pathlib import Path
-from pytask import task
-import pandas as pd
 import numpy as np
 import pickle
 
@@ -129,8 +125,7 @@ def task_gradient_boosting_and_accuracy(
         txt_file.write(f"r2_Train: {r2}\n")
 
 
-
-def task_determine_feature_importance(
+def task_determine_feature_importance_title(
     depends_on={
         "gb_model": BLD / "python" / "Lesson_E" / "model" / "gb_model.pkl",
         "x_test_std": BLD / "python" / "Lesson_E" / "data" / "X_test_scaled.npy",
