@@ -1,12 +1,9 @@
 #Task file for D_Decision_trees
 
-
 from pathlib import Path
 from pytask import task
 import pandas as pd
-import keras
 import pickle
-
 
 from causalmachinelearning.config import BLD, SRC
 from causalmachinelearning.data_management.D_Decision_trees import create_data, fit_tree, predict_new_value, visualize_decision_tree
@@ -18,10 +15,8 @@ def task_create_data(
     }
 ):
     """Create data."""
-    dataset = create_data()
-    data = pd.DataFrame(dataset)
+    data = create_data()
     data.to_csv(produces["dataset"])
-    
     
     
 def task_fit_tree(
@@ -38,7 +33,6 @@ def task_fit_tree(
     pickle.dump(regressor, open(produces["regressor"], 'wb'))
     
 
-
 def task_predict_new_value(
     depends_on={
         "regressor": BLD / "python" / "Lesson_D" / "model" / "regressor.pkl",
@@ -53,7 +47,6 @@ def task_predict_new_value(
     y_pred = predict_new_value(regressor, new_value)
     y_pred = pd.DataFrame(y_pred)
     y_pred.to_csv(produces["y_pred"])
-    
     
     
 def task_plot_tree(

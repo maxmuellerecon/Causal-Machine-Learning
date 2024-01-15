@@ -1,21 +1,16 @@
 #Task file for C_Neural_networks
 
-from pathlib import Path
-from pytask import task
 import pandas as pd
-import tensorflow as tf
 import keras
 import pickle
 
-
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.C_Neural_networks import preprocess_data, scale_datasets, build_model_using_sequential, compile_and_train_model, plot_history, predict_house_value, assess_performance
-
+from causalmachinelearning.data_management.C_Neural_networks import preprocess_data, scale_datasets, build_model_using_sequential, compile_and_train_model, predict_house_value, assess_performance
 
 
 def task_preprocess_data(
     depends_on={"train_data": SRC / "data" / "california_housing_train.csv",
-                "test_data": SRC / "data" / "california_housing_train.csv",
+                "test_data": SRC / "data" / "california_housing_test.csv",
     },
     produces={
         "x_train": BLD / "python" / "Lesson_C" / "data" / "x_train.csv",
@@ -34,7 +29,6 @@ def task_preprocess_data(
     y_test.to_csv(produces["y_test"])
 
 
-
 def task_scale_datasets(
     depends_on={
         "x_train": BLD / "python" / "Lesson_C" / "data" / "x_train.csv",
@@ -51,7 +45,6 @@ def task_scale_datasets(
     x_train_scaled, x_test_scaled = scale_datasets(x_train, x_test)
     x_train_scaled.to_csv(produces["x_train_scaled"])
     x_test_scaled.to_csv(produces["x_test_scaled"])
-    
     
     
 def task_build_model_using_sequential(
@@ -82,22 +75,6 @@ def task_compile_and_train_model(
         pickle.dump(history, file)
 
 
-def task_plot_history(
-    depends_on={
-        "history": BLD / "python" / "Lesson_C" / "model" / "history.pkl",
-    },
-    produces={
-        "plot": BLD / "python" / "Lesson_C" / "figures" / "history.png",
-    }
-):
-    # Load history using pickle
-    with open(depends_on["history"], "rb") as file:
-        history = pickle.load(file)
-    # Plot the history
-    plot = plot_history(history, 'mean_squared_logarithmic_error')
-    plot.savefig(produces["plot"])
-    
-
 def task_predict_house_value(
     depends_on={
         "model": BLD / "python" / "Lesson_C" / "model" / "model.keras",
@@ -113,6 +90,7 @@ def task_predict_house_value(
     x_test = pd.read_csv(depends_on["x_test"])
     x_test_pred = predict_house_value(model, x_test_scaled, x_test)
     x_test_pred.to_csv(produces["x_test_pred"])
+
 
 def task_assess_performance(
     depends_on={

@@ -2,7 +2,6 @@
 
 import pandas as pd
 import pytest
-import warnings
 pytestmark = pytest.mark.filterwarnings("ignore")
 
 from causalmachinelearning.config import BLD, SRC

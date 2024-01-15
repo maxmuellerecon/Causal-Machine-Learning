@@ -47,6 +47,7 @@ def task_ridge_regression_and_fill_coef_matrix(
     coef_matrix_ridge = ridge_regression_and_fill_coef_matrix(data)
     coef_matrix_ridge.to_csv(produces)
     
+    
 def task_lasso_regression_and_fill_coef_matrix(
     depends_on=BLD / "python" / "Lesson_B" / "data" / "data.csv",
     produces=BLD / "python" / "Lesson_B" / "data" / "coef_matrix_lasso.csv",

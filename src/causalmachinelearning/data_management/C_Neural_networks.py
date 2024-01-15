@@ -2,21 +2,16 @@
 
 import math
 import pandas as pd
-import tensorflow as tf
-import matplotlib.pyplot as plt
-from keras import Model
 from keras import Sequential
 from keras.optimizers import Adam
 from sklearn.preprocessing import StandardScaler
 from keras.layers import Dense, Dropout
-from sklearn.model_selection import train_test_split
 from keras.losses import MeanSquaredLogarithmicError
 
 
 ####################C. Vanilla Neural Networks##############################################	
 #Positive: Non-parametric, can approximate any function, can be used for classification and regression
 #Negative: Can only handle structured data (supervised learning)
-
 
 def preprocess_data(train_data, test_data):
     """Preprocess data, split target and predictors"""
@@ -27,7 +22,7 @@ def preprocess_data(train_data, test_data):
 
 
 def scale_datasets(x_train, x_test):
-  """  Standard Scale test and train data  Z - Score normalization (substract each data from its mean and divides it by the standard deviation of the data), get faster convergence to global optimum"""
+  """ Standard Scale test and train data  Z - Score normalization (substract each data from its mean and divides it by the standard deviation of the data), get faster convergence to global optimum"""
   standard_scaler = StandardScaler()
   x_train_scaled = pd.DataFrame(
       standard_scaler.fit_transform(x_train),
@@ -62,7 +57,6 @@ def build_model_using_sequential():
     return model
 
 
-
 # loss function
 def compile_and_train_model(model, x_train_scaled, y_train):
     """Compile and train the model, We use Mean Squared Logarithmic Loss as loss function and metric, and Adam loss function optimizer.
@@ -91,17 +85,9 @@ def compile_and_train_model(model, x_train_scaled, y_train):
     )
     return history
 
-def plot_history(history, key):
-    plt.plot(history.history[key])
-    plt.plot(history.history['val_'+key])
-    plt.xlabel("Epochs")
-    plt.ylabel(key)
-    plt.legend([key, 'val_'+key])
-    plt.show()
-    return plt
-
 
 def predict_house_value(model, x_test_scaled, x_test):
+    """Predict house value using the model and safe it in the testing data"""
     x_test['prediction'] = model.predict(x_test_scaled)
     return x_test
 

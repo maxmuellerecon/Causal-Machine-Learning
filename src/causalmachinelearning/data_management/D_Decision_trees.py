@@ -8,8 +8,6 @@ from sklearn.tree import export_graphviz
 import graphviz
 
 
-
-
 ####################D. Decision Trees for Regression##############################################	
 #Supervised learning algorithm used for regression 
 #Positive: Non-parametric, can approximate any function, can be used for classification and regression
@@ -33,7 +31,9 @@ def create_data():
     ['MMOFPS', 25000, 52000], 
     ['MMORPG', 30000, 80000] 
     ])
-    return dataset
+    data = pd.DataFrame(dataset)
+    return data
+
 
 def preprocess_data(dataset):
     # Convert non-numeric columns to numeric
