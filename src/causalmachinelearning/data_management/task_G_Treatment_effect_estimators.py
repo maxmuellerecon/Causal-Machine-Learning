@@ -9,6 +9,7 @@ import pickle
 from causalmachinelearning.config import BLD, SRC
 from causalmachinelearning.data_management.G_Treatment_effect_estimators import split_train_test, create_y_star, train_model, predict_cate, split_train_test_ice, predict_y_star_cont
 
+
 def task_split_train_test(
     depends_on={
         "data": SRC / "data" / "invest_email_rnd.csv",

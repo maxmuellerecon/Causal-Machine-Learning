@@ -5,6 +5,7 @@ dependencies:
   - conda-lock
   - ipykernel
   - jupyterlab
+  - lightgbm
   - linearmodels
   - pandas
   - pip >=21.1
@@ -20,8 +21,9 @@ dependencies:
   - python=3.11
   - pyyaml
   - scikit-learn
+  - seaborn
   - setuptools_scm
   - statsmodels
   - tensorflow
   - toml
-  - pip: [-e ., kaleido, pdbp]
+  - pip: [-e ., pickle, kaleido, pdbp]

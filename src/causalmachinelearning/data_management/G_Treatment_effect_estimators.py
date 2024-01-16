@@ -1,13 +1,8 @@
 #G_Treatment_effect_estimators
 
-import pandas as pd
 import numpy as np
-from pathlib import Path
-from matplotlib import pyplot as plt
-import seaborn as sns
 from lightgbm import LGBMRegressor
 from sklearn.model_selection import train_test_split
-
 
 ################################G.1 From Outcomes to treatment effects################################
 #From predicting outcomes to predicting treatment effects, called F-Learner
@@ -85,6 +80,15 @@ def split_train_test_ice(raw, size):
 
 #Fit a model to predict y_star (treatment effect)
 def predict_y_star_cont(tr_data, test_data):
+    """Predict y star for continuous treatment
+
+    Args:
+        tr_data (DataFrame): training data
+        test_data (DataFrame): test data
+
+    Returns:
+        test_pred (DataFrame): test data with predicted y_star (CATE)
+    """
     y_star_cont = ((tr_data["price"] - tr_data["price"].mean())
                *(tr_data["sales"] - tr_data["sales"].mean()))
     cate_learner = LGBMRegressor(max_depth=3, min_child_samples=300, num_leaves=5)
@@ -94,4 +98,3 @@ def predict_y_star_cont(tr_data, test_data):
     test_pred = test_data.assign(cate=cate_test_transf_y)                                    #assign test cate to test data
     test_pred.sample(5)
     return test_pred
-

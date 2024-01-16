@@ -139,7 +139,6 @@ def plot_regr_model(data):
     g = sns.FacetGrid(data, col="sens_band")
     g.map_dataframe(sns.regplot, x="price", y="sales")
     g.set_titles(col_template="Sens. Band {col_name}")
-    plt.show() 
     return plt
 
 
@@ -148,5 +147,4 @@ def plot_ml_model(data):
     g = sns.FacetGrid(data, col="pred_band")
     g.map_dataframe(sns.regplot, x="price", y="sales")
     g.set_titles(col_template="Pred. Band {col_name}");
-    plt.show() 
     return plt

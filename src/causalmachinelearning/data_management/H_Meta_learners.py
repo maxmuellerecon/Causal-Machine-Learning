@@ -1,12 +1,7 @@
 #H_Meta_learners
 
-import pandas as pd
 import numpy as np
-from pathlib import Path
-from matplotlib import pyplot as plt
-import seaborn as sns
 from lightgbm import LGBMRegressor
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.linear_model import LogisticRegression
 
@@ -147,5 +142,3 @@ def apply_ps_predict(train, test, g, x2_m0, x2_m1):
     x_learner_cate_test = test.assign(cate=(ps_predict(g,test,1)*x2_m0.predict(test[X]) +
                                     ps_predict(g,test,0)*x2_m1.predict(test[X])))
     return x_learner_cate_train, x_learner_cate_test
-
-
