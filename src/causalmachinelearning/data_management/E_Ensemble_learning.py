@@ -22,7 +22,6 @@ from sklearn.inspection import permutation_importance
 #As an example for a bagging technique, we will use Random Forests
 #Bagging: bootstrap aggregation, where we take random samples of data with replacement and train a decision tree on each sample
 #Positive: Every decision tree has high variance, but when we combine all of them in parallel then the resultant variance is low
-
 def make_dataset():
     """Make dataset for regression"""
     n_samples = 100 # Number of samples
