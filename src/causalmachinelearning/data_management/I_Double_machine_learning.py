@@ -1,27 +1,19 @@
 #I_Double-machine learning
 
-from pathlib import Path
-import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
-import os
 import statsmodels.formula.api as smf
-from matplotlib import style
 from lightgbm import LGBMRegressor
 from sklearn.model_selection import cross_val_predict
 
-
-
 #Positives: Works for continuous and binary treatments and has rigorous validity
-
 #####################I.1 Recap: Frisch-Waugh-Lovell Theorem########################
 def plot_pattern(df, x_var, y_var):
     """Plot pattern of data"""
     np.random.seed(123)
-    sns.scatterplot(data=df.sample(1000), x=x_var, y=y_var, hue="weekday")
-    plt.show()
-    return plt
+    plot = sns.scatterplot(data=df.sample(1000), x=x_var, y=y_var, hue="weekday")
+    return plot
 
 
 def fwl_theorem(train):
@@ -45,11 +37,11 @@ def fwl_theorem(train):
                 ).fit().summary()   
     return table1
 
+
 def verify_fwl_theorem(train):
     """Verify that FWL is the same as usual regression: it is exactly the same (-4.004)"""
     table2 = smf.ols("sales~price+temp+C(weekday)+cost", data=train).fit().summary() 
     return table2
-
 
 
 # #####################I.2 Parametric Double ML ATE############################################
@@ -83,7 +75,6 @@ def plot_debiased(df):
     """Visualize debiased treatment"""
     np.random.seed(123)
     sns.scatterplot(data=df.sample(1000), x="price_res", y="sales", hue="weekday");
-    plt.show
     return plt
 
 
@@ -133,7 +124,7 @@ def parametric_double_ml_cate(train_pred_y, test):
 #We still had linear specifications in the last step, now we want to use non-linear models
 #Same as before:
 def orthogonalize_treatment_and_outcome(train):
-    """orthogonalize_treatment_and_outcome."""
+    """orthogonalize treatment and outcome, use cross validation for both models"""
     T = "price"
     X = ["temp", "weekday", "cost"]
     Y = "sales"

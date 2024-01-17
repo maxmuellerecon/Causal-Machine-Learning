@@ -102,7 +102,6 @@ def x_learner_fit(train_data, depth, samples):
 
 def propensity_score_model(train_data):
     """Give out the propensity score model"""
-    # propensity score model
     T = "em1"
     X = ["age", "income", "insurance", "invested"]
     g = LogisticRegression(solver="lbfgs", penalty='none')                  
@@ -113,6 +112,7 @@ def propensity_score_model(train_data):
 #2. impute the treatment effect and fit the second stage models on them.
 #prediction - true Y in both models
 def x_learner_st2(train_data, x1_m0, x1_m1):
+    """Train second stage of the x_learner model and save it as a pickle file"""
     Y = "converted"
     T = "em1"
     X = ["age", "income", "insurance", "invested"]
@@ -130,10 +130,25 @@ def x_learner_st2(train_data, x1_m0, x1_m1):
 
 #3.) Use propensity score model
 def ps_predict(g, df, t):
+    """Predict the propensity score based on covariates X"""
     X = ["age", "income", "insurance", "invested"]
     return g.predict_proba(df[X])[:, t]
 
+
 def apply_ps_predict(train, test, g, x2_m0, x2_m1):
+    """Get the CATE of the x learner for the train and test dataset
+
+    Args:
+        train (DataFrame): train data
+        test (DataFrame): test data
+        g (LogisticRegressor): Logistic regression model for ps
+        x2_m0 (LGBMRegressor): m0 model
+        x2_m1 (LGBMRegressor): m1 model
+
+    Returns:
+        x_learner_cate_train(DataFrame): Data with CATES for train data
+        x_learner_cate_test (DataFrame): Data with CATES for test data
+    """
     X = ["age", "income", "insurance", "invested"]
     #Weight the 2 models by the propensity score    
     x_learner_cate_train = (ps_predict(g,train,1)*x2_m0.predict(train[X]) +

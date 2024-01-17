@@ -1,9 +1,6 @@
 #Task file for I_Double_machine_learning
 
-from pathlib import Path
-from pytask import task
 import pandas as pd
-import numpy as np
 import pickle
 
 from causalmachinelearning.config import BLD, SRC
@@ -21,7 +18,7 @@ def task_plot_pattern(
     """Plot pattern"""
     train = pd.read_csv(depends_on["train"])
     plot = plot_pattern(train, "price", "sales")
-    plot.savefig(produces["plot"])
+    plot.figure.savefig(produces["plot"])
     
 
 def task_fwl_theorem(

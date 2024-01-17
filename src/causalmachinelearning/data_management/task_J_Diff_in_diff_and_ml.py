@@ -1,9 +1,6 @@
 #Task file for J_Diff_in_diff_and_ml
 
-from pathlib import Path
-from pytask import task
 import pandas as pd
-import numpy as np
 import pickle
 
 from causalmachinelearning.config import BLD, SRC

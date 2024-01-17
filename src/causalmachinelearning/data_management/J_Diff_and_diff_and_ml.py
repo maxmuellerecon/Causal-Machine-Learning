@@ -2,15 +2,11 @@
 
 import pandas as pd
 import numpy as np
-from scipy.special import expit
-
-from linearmodels.panel import PanelOLS
 import statsmodels.formula.api as smf
 
 import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib import style
-
 style.use("ggplot")
 
 
@@ -63,7 +59,15 @@ def plot_trend(data):
 
 
 def twfe_regression(df):
-    """Run two-way fixed effects regression"""
+    """Run two-way fixed effects regression
+    
+    Args:
+        df (pd.DataFrame): data
+        
+    Returns:
+        twfe_output (str): summary of regression
+        twfe_model (statsmodels.regression.linear_model.RegressionResultsWrapper): regression model
+    """
     formula = f"""installs ~ treat + C(unit) + C(date)"""
     twfe_output = smf.ols(formula, data=df).fit().summary()
     twfe_model = smf.ols(formula, data=df).fit()
@@ -99,7 +103,6 @@ def plot_counterfactuals(df, twfe_model):
         y = "installs",
         hue="cohort",
     )
-    plt.show()
     return plt
 
 
@@ -118,6 +121,7 @@ def g_plot_data_fct(df):
 
 
 def plot_comparison(data):
+    """Plot comparison of cohorts"""
     cohorts = data["cohort"].unique()
     palette = dict(zip(map(str, cohorts), ["C0", "C1", "C2"]))
     fig, axs = plt.subplots(2, 2, figsize=(15, 8), sharex=True, sharey=True)
@@ -147,7 +151,6 @@ def plot_comparison(data):
     plot_comp(data[data["date"] <= cohorts[1]], axs[1, 0], cohorts[-1], "Early vs Late")
     plot_comp(data[data["date"] > cohorts[0]], axs[1, 1], cohorts[-1], "Late vs Early")
     plt.tight_layout()
-    plt.show()
     return plt
 
 
@@ -207,6 +210,17 @@ def twfe_regression_groups(df_heter):
 
 
 def check_trueATT_vs_predATT(df_heter_str, twfe_model_groups):
+    """Check true ATT vs predicted ATT
+    Args:
+        df_heter_str (pd.DataFrame): data 
+        twfe_model_groups (statsmodels.regression.linear_model.RegressionResultsWrapper): regression model
+        
+    Returns:
+        df_pred (pd.DataFrame): data with predicted ATT
+        length (int): length of regression output
+        tau_mean (float): mean of true ATT
+        pred_effect_mean (float): mean of predicted ATT
+    """
     df_pred = (df_heter_str
             .assign(**{"installs_hat_0": twfe_model_groups.predict(df_heter_str.assign(**{"treat":0}))})
             .assign(**{"effect_hat": lambda d: d["installs"] - d["installs_hat_0"]}))
@@ -217,6 +231,7 @@ def check_trueATT_vs_predATT(df_heter_str, twfe_model_groups):
 
 
 def plot_treatment_effect(twfe_model_groups):
+    """Plot treatment effect by cohort"""
     effects = (twfe_model_groups.params[twfe_model_groups.params.index.str.contains("treat")]
             .reset_index()
             .rename(columns={0:"param"})
