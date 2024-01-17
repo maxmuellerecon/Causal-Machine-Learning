@@ -3,10 +3,13 @@ name: cml
 channels: [conda-forge, nodefaults]
 dependencies:
   - conda-lock
+  - graphviz
   - ipykernel
   - jupyterlab
   - lightgbm
   - linearmodels
+  - numpy
+  - matplotlib
   - pandas
   - pip >=21.1
   - plotly>=5.13.0
@@ -24,6 +27,5 @@ dependencies:
   - seaborn
   - setuptools_scm
   - statsmodels
-  - tensorflow
   - toml
-  - pip: [-e ., pickle, kaleido, pdbp]
+  - pip: [-e ., keras, tensorflow, kaleido, pdbp]
