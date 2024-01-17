@@ -1,6 +1,5 @@
 #Test file for B_Ridge_and_Lasso
 
-import pandas as pd
 import pytest
 pytestmark = pytest.mark.filterwarnings("ignore")
 
