@@ -1,19 +1,19 @@
-#F_Heterogeneous Treatment effects 
+# F_Heterogeneous Treatment effects
 
-#Import libraries
+# Import libraries
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
 import statsmodels.formula.api as smf
-import statsmodels.api as sm
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import train_test_split
 
 
 ############################F.1 Linear regression analysis##############################################
-#Goal: Predict when to charge more for ice cream, depending on temperature, weekday and cost
-#Split data into train and test
+# Goal: Predict when to charge more for ice cream, depending on temperature, weekday and cost
+# Split data into train and test
+
 
 def split_data(data):
     """Run linear regression models
@@ -28,14 +28,14 @@ def split_data(data):
     np.random.seed(123)
     train, test = train_test_split(data, test_size=0.3)
     return train, test
-    
-    
+
+
 def regressions_three(train):
     """Run linear regression models
 
     Args:
         train (data): training data
-        
+
     Returns:
         m1 (LinearRegression): model to be used
         m2 (LinearRegression): model to be used
@@ -44,15 +44,17 @@ def regressions_three(train):
         latex_code2 (str): latex code for table 2
         latex_code3 (str): latex code for table 3
     """
-    #Linear regression
-    m1 = smf.ols("sales ~ price + temp+C(weekday)+cost", data=train).fit() #Include the C to make it categorical
+    # Linear regression
+    m1 = smf.ols(
+        "sales ~ price + temp+C(weekday)+cost", data=train
+    ).fit()  # Include the C to make it categorical
     table1 = m1.summary().tables[1]
     print(table1)
     # Export to LaTeX
     latex_code1 = table1.as_latex_tabular()
     print(latex_code1)
-    
-    #Linear regression with one interaction
+
+    # Linear regression with one interaction
     m2 = smf.ols("sales ~ price*temp + C(weekday) +cost", data=train).fit()
     table2 = m2.summary().tables[1]
     print(table2)
@@ -60,7 +62,7 @@ def regressions_three(train):
     latex_code2 = table2.as_latex_tabular()
     print(latex_code2)
 
-    #Linear regression with all interactions
+    # Linear regression with all interactions
     m3 = smf.ols("sales ~ price*temp + price*C(weekday) + price*cost", data=train).fit()
     table3 = m3.summary().tables[1]
     print(table3)
@@ -70,10 +72,8 @@ def regressions_three(train):
     return m1, m2, m3, latex_code1, latex_code2, latex_code3
 
 
-
-
 ###########################F.2 Sensitivity analysis#####################################################
-#Predict the effect of a change in price by 1 on sales
+# Predict the effect of a change in price by 1 on sales
 def pred_sensitivity(m, df, t="price"):
     """Predict the effect of a change in price by 1 on sales
 
@@ -85,15 +85,13 @@ def pred_sensitivity(m, df, t="price"):
     Returns:
         DataFrame: Data frame with predicted sensitivity
     """
-    return df.assign(**{
-        "pred_sens": m.predict(df.assign(**{t:df[t]+1})) - m.predict(df)
-    })
-
+    return df.assign(
+        **{"pred_sens": m.predict(df.assign(**{t: df[t] + 1})) - m.predict(df)}
+    )
 
 
 # ##########################F.3 Comparing CATE model to ML prediction model###############################
-
-#ML Model using price, temp, weekday and cost to predict sales
+# ML Model using price, temp, weekday and cost to predict sales
 def ml_model(train, test):
     """ML Model using price, temp, weekday and cost to predict sales
 
@@ -108,12 +106,12 @@ def ml_model(train, test):
     Y = ["sales"]
     m4 = GradientBoostingRegressor()
     m4.fit(train[X], train[Y])
-    #Check that model does not overfit
+    # Check that model does not overfit
     m4.score(test[X], test[Y])
     return m4
 
 
-#Segment the units into 2 groups based on the sensitivity predictions
+# Segment the units into 2 groups based on the sensitivity predictions
 def comparison(regr_data, ml_model, groups):
     """Predict bands in regression and ml model
 
@@ -127,9 +125,13 @@ def comparison(regr_data, ml_model, groups):
     """
     X = ["price", "temp", "weekday", "cost"]
     bands_df = regr_data.assign(
-        sens_band = pd.qcut(regr_data["pred_sens"], groups), # create two groups based on sensitivity predictions 
-        pred_sales = ml_model.predict(regr_data[X]),
-        pred_band = pd.qcut(ml_model.predict(regr_data[X]), groups), # create two groups based on sales predictions
+        sens_band=pd.qcut(
+            regr_data["pred_sens"], groups
+        ),  # create two groups based on sensitivity predictions
+        pred_sales=ml_model.predict(regr_data[X]),
+        pred_band=pd.qcut(
+            ml_model.predict(regr_data[X]), groups
+        ),  # create two groups based on sales predictions
     )
     return bands_df
 
@@ -146,5 +148,5 @@ def plot_ml_model(data):
     """Plot the ML model - Here elasticity is about the same for both groups"""
     g = sns.FacetGrid(data, col="pred_band")
     g.map_dataframe(sns.regplot, x="price", y="sales")
-    g.set_titles(col_template="Pred. Band {col_name}");
+    g.set_titles(col_template="Pred. Band {col_name}")
     return plt
