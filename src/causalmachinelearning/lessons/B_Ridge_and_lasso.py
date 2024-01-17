@@ -26,6 +26,8 @@ def create_data():
 
 def plot_data(data):
     """Plot data"""
+    _fail_if_not_dataframe(data)
+    
     plt.plot(data["x"], data["y"], ".")
     return plt
 
@@ -41,6 +43,9 @@ def linear_regression(data, power, models_to_plot):
     Returns:
         ret (list): List of coefficients
     """
+    _fail_if_not_dataframe(data)
+    _fail_if_not_int(power)
+    
     predictors = ["x"]
     if power >= 2:
         predictors.extend(["x_%d" % i for i in range(2, power + 1)])
@@ -76,6 +81,8 @@ def linear_regression_and_fill_coef_matrix(data, models_to_plot):
     Returns:
         coef_matrix (DataFrame): Data of the coefficients, intercepts and rss
     """
+    _fail_if_not_dataframe(data)
+    
     col = ["rss", "intercept"] + ["coef_x_%d" % i for i in range(1, 16)]
     ind = ["model_pow_%d" % i for i in range(1, 16)]
     coef_matrix = pd.DataFrame(index=ind, columns=col)
@@ -90,10 +97,11 @@ def linear_regression_and_fill_coef_matrix(data, models_to_plot):
 # L2 Regularization: Ridge Regression
 # Positive: Ridge regression works well with multicollinearity, includes all of them in model; prevents overfitting
 # Negative: No model selection, all predictors are included in the final model
-
-
 def ridge_regression(data, predictors, alpha, models_to_plot={}):
     """Function for ridge regression"""
+    _fail_if_not_dataframe(data)
+    _fail_if_alpha_not_float(alpha)
+    
     # Fit the model
     ridgereg = Ridge(alpha=alpha)
     ridgereg.fit(data[predictors], data["y"])
@@ -124,6 +132,8 @@ def ridge_regression_and_fill_coef_matrix(data):
     Returns:
         coef_matrix_ridge (DataFrame): Data of the coefficients, intercepts and rss
     """
+    _fail_if_not_dataframe(data)
+    
     # Initialize predictors to be set of 15 powers of x
     predictors = ["x"]
     predictors.extend(["x_%d" % i for i in range(2, 16)])
@@ -148,10 +158,11 @@ def ridge_regression_and_fill_coef_matrix(data):
 # L1 Regularization: Lasso Regression
 # Positive: Lasso regression can be used to select a subset of predictors
 # Negative: Lasso regression (and all regularizations) works poorly when there are high correlations between predictors, selects shrunken coefficients arbitrarily
-
-
 def lasso_regression(data, predictors, alpha, models_to_plot={}):
     """Function for lasso regression"""
+    _fail_if_not_dataframe(data)
+    _fail_if_alpha_not_float(alpha)
+    
     # Fit the model
     lassoreg = Lasso(alpha=alpha, max_iter=100000)
     lassoreg.fit(data[predictors], data["y"])
@@ -182,6 +193,8 @@ def lasso_regression_and_fill_coef_matrix(data):
     Returns:
         coef_matrix_lasso (DataFrame): Data of the coefficients, intercepts and rss (residual sum of squares)
     """
+    _fail_if_not_dataframe(data)
+    
     # Initialize predictors to all 15 powers of x
     predictors = ["x"]
     predictors.extend(["x_%d" % i for i in range(2, 16)])
@@ -203,3 +216,17 @@ def lasso_regression_and_fill_coef_matrix(data):
             data, predictors, alpha_lasso[i], models_to_plot
         )
     return coef_matrix_lasso
+
+
+###########################Fail Functions##############################################
+def _fail_if_not_dataframe(data):
+    if not isinstance(data, pd.DataFrame):
+        raise TypeError("data must be a dataframe, not %s" % type(data))
+    
+def _fail_if_not_int(power):
+    if not isinstance(power, int):
+        raise TypeError("power must be an integer, not %s" % type(power))
+    
+def _fail_if_alpha_not_float(alpha):
+    if not isinstance(alpha, float):
+        raise TypeError("alpha must be a float, not %s" % type(alpha))

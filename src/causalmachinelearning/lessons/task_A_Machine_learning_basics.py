@@ -6,7 +6,6 @@ import pickle
 from causalmachinelearning.config import BLD, SRC
 from causalmachinelearning.lessons.A_Machine_learning_basics import separate_customers, merge_customers, split_data, plot_profit_by_income, plot_profit_by_region, lower_bound_CI, plot_oos_performance, encode_region, specify_gradient_boosting_regressor, predict_net_value
 
-
 def task_separate_customers(
     depends_on=SRC / "data" / "customer_transactions.csv",
     produces=BLD / "python" / "Lesson_A" / "data" / "profitable.dta",
