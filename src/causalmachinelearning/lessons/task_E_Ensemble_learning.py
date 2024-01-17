@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.E_Ensemble_learning import make_dataset, decision_tree, random_forest, load_and_split_data, standardize_data, gradient_boosting_and_accuracy, determine_feature_importance
+from causalmachinelearning.lessons.E_Ensemble_learning import make_dataset, decision_tree, random_forest, load_and_split_data, standardize_data, gradient_boosting_and_accuracy, determine_feature_importance
  
 
 def task_make_dataset(

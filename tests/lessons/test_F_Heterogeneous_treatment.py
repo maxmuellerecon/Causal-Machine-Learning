@@ -8,7 +8,7 @@ import pickle
 from matplotlib import pyplot as plt
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.F_Heterogeneous_treatment_effects import split_data, regressions_three, pred_sensitivity, ml_model, comparison, plot_regr_model, plot_ml_model
+from causalmachinelearning.lessons.F_Heterogeneous_treatment_effects import split_data, regressions_three, pred_sensitivity, ml_model, comparison, plot_regr_model, plot_ml_model
 
 def test_split_data_shape_train():
     """Test split data shape."""

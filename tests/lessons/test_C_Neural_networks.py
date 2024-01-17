@@ -7,7 +7,7 @@ import pandas as pd
 import keras
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.C_Neural_networks import preprocess_data, scale_datasets, build_model_using_sequential, predict_house_value, assess_performance
+from causalmachinelearning.lessons.C_Neural_networks import preprocess_data, scale_datasets, build_model_using_sequential, predict_house_value, assess_performance
 
 def test_preprocess_data_shape_x_train():
     """Test preprocess_data function for x_train shape."""

@@ -3,9 +3,10 @@
 import pandas as pd
 import keras
 import pickle
+import pytask
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.C_Neural_networks import preprocess_data, scale_datasets, build_model_using_sequential, compile_and_train_model, predict_house_value, assess_performance
+from causalmachinelearning.lessons.C_Neural_networks import preprocess_data, scale_datasets, build_model_using_sequential, compile_and_train_model, predict_house_value, assess_performance
 
 
 def task_preprocess_data(
@@ -46,7 +47,7 @@ def task_scale_datasets(
     x_train_scaled.to_csv(produces["x_train_scaled"])
     x_test_scaled.to_csv(produces["x_test_scaled"])
     
-    
+@pytask.mark.filterwarnings("ignore")    
 def task_build_model_using_sequential(
     produces={
         "model": BLD / "python" / "Lesson_C" / "model" / "model.keras",

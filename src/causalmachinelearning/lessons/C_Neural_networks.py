@@ -8,7 +8,6 @@ from sklearn.preprocessing import StandardScaler
 from keras.layers import Dense, Dropout
 from keras.losses import MeanSquaredLogarithmicError
 
-
 ####################C. Vanilla Neural Networks##############################################	
 #Positive: Non-parametric, can approximate any function, can be used for classification and regression
 #Negative: Can only handle structured data (supervised learning)

@@ -4,7 +4,7 @@ import pandas as pd
 import pickle
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.I_Double_machine_learning import plot_pattern, fwl_theorem, verify_fwl_theorem, debias_treatment, plot_debiased, denoise_outcome, plot_debiased_denoised, comparison_models, parametric_double_ml_cate, orthogonalize_treatment_and_outcome, non_parametric_double_ml_cate
+from causalmachinelearning.lessons.I_Double_machine_learning import plot_pattern, fwl_theorem, verify_fwl_theorem, debias_treatment, plot_debiased, denoise_outcome, plot_debiased_denoised, comparison_models, parametric_double_ml_cate, orthogonalize_treatment_and_outcome, non_parametric_double_ml_cate
 
 
 def task_plot_pattern(

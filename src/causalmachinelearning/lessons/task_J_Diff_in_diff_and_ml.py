@@ -4,7 +4,7 @@ import pandas as pd
 import pickle
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.J_Diff_and_diff_and_ml import create_data, plot_trend, twfe_regression, plot_counterfactuals, g_plot_data_fct, plot_comparison, fct_late_vs_early, plot_twfe_regression_late_vs_early, twfe_regression_groups, check_trueATT_vs_predATT, plot_treatment_effect
+from causalmachinelearning.lessons.J_Diff_and_diff_and_ml import create_data, plot_trend, twfe_regression, plot_counterfactuals, g_plot_data_fct, plot_comparison, fct_late_vs_early, plot_twfe_regression_late_vs_early, twfe_regression_groups, check_trueATT_vs_predATT, plot_treatment_effect
 
 
 def task_create_data(

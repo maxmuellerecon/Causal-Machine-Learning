@@ -3,8 +3,8 @@
 import pandas as pd
 import pickle
 
-from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.D_Decision_trees import (
+from causalmachinelearning.config import BLD
+from causalmachinelearning.lessons.D_Decision_trees import (
     create_data,
     fit_tree,
     predict_new_value,

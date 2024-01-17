@@ -4,7 +4,7 @@ import pytest
 pytestmark = pytest.mark.filterwarnings("ignore")
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.B_Ridge_and_lasso import create_data, plot_data, linear_regression_and_fill_coef_matrix, ridge_regression_and_fill_coef_matrix, lasso_regression_and_fill_coef_matrix
+from causalmachinelearning.lessons.B_Ridge_and_lasso import create_data, plot_data, linear_regression_and_fill_coef_matrix, ridge_regression_and_fill_coef_matrix, lasso_regression_and_fill_coef_matrix
 
 def test_create_data_shape():
     """Test create_data."""

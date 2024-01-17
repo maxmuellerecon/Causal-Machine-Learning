@@ -8,7 +8,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 
 from causalmachinelearning.config import BLD 
-from causalmachinelearning.data_management.E_Ensemble_learning import make_dataset, decision_tree, random_forest, load_and_split_data, standardize_data
+from causalmachinelearning.lessons.E_Ensemble_learning import make_dataset, decision_tree, random_forest, load_and_split_data, standardize_data
 
 
 def test_make_dataset_type_X():

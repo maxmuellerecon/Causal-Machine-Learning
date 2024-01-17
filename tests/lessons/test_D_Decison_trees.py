@@ -10,7 +10,7 @@ import pickle
 import graphviz
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.D_Decision_trees import create_data, fit_tree, predict_new_value, visualize_decision_tree
+from causalmachinelearning.lessons.D_Decision_trees import create_data, fit_tree, predict_new_value, visualize_decision_tree
 
 
 def test_create_data_type():

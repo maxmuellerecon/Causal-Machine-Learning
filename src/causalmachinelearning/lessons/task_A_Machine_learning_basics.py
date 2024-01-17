@@ -4,7 +4,7 @@ import pandas as pd
 import pickle
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.A_Machine_learning_basics import separate_customers, merge_customers, split_data, plot_profit_by_income, plot_profit_by_region, lower_bound_CI, plot_oos_performance, encode_region, specify_gradient_boosting_regressor, predict_net_value
+from causalmachinelearning.lessons.A_Machine_learning_basics import separate_customers, merge_customers, split_data, plot_profit_by_income, plot_profit_by_region, lower_bound_CI, plot_oos_performance, encode_region, specify_gradient_boosting_regressor, predict_net_value
 
 
 def task_separate_customers(

@@ -5,7 +5,7 @@ pytestmark = pytest.mark.filterwarnings("ignore")
 import pandas as pd
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.I_Double_machine_learning import plot_pattern, fwl_theorem, verify_fwl_theorem, debias_treatment, denoise_outcome, comparison_models, parametric_double_ml_cate, non_parametric_double_ml_cate, orthogonalize_treatment_and_outcome
+from causalmachinelearning.lessons.I_Double_machine_learning import plot_pattern, fwl_theorem, verify_fwl_theorem, debias_treatment, denoise_outcome, comparison_models, parametric_double_ml_cate, non_parametric_double_ml_cate, orthogonalize_treatment_and_outcome
 
 def test_plot_pattern_type_input():
     train = pd.read_csv(SRC / "data" / "ice_cream_sales.csv")

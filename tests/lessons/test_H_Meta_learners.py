@@ -9,7 +9,7 @@ import pickle
 from sklearn.linear_model import LogisticRegression
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.data_management.H_Meta_learners import s_learner_fit, s_learner_predict, s_learner_evaluate_model, t_learner_fit, t_learner_cate, x_learner_fit, propensity_score_model, x_learner_st2, ps_predict, apply_ps_predict
+from causalmachinelearning.lessons.H_Meta_learners import s_learner_fit, s_learner_predict, s_learner_evaluate_model, t_learner_fit, t_learner_cate, x_learner_fit, propensity_score_model, x_learner_st2, ps_predict, apply_ps_predict
 
 def test_s_learner_fit_type():
     """Test s_learner_fit type of s_learner"""
