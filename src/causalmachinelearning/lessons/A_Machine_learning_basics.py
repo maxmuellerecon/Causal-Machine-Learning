@@ -23,6 +23,8 @@ def separate_customers(raw):
     Returns:
         DataFrame: Gives out the final dataframe
     """
+    _fail_if_not_dataframe(raw)
+
     profitable = (raw[["customer_id"]]
               .assign(net_value = raw
                       .drop(columns="customer_id")
@@ -41,6 +43,9 @@ def merge_customers(raw, merge_data):
     Returns:
         DataFrame: Gives out the final merged dataframe
     """
+    _fail_if_not_dataframe(raw)
+    _fail_if_not_dataframe(merge_data)
+    
     customer_features_merged = (merge_data
                         .merge(raw, on="customer_id"))
     return customer_features_merged
@@ -49,6 +54,8 @@ def merge_customers(raw, merge_data):
 #Split the data into train and test
 def split_data(raw, size):
     """Split the data into train and test"""
+    _fail_if_not_dataframe(raw)
+    
     #Remove the variable level_0
     raw = raw.drop(columns="level_0")
     train, test = train_test_split(raw, test_size=size, random_state=13)
@@ -67,6 +74,9 @@ def plot_profit_by_income(raw, quantiles):
     Returns:
         plot: Plot of the net value by income quantiles
     """
+    _fail_if_not_dataframe(raw)
+    _fail_if_too_many_quantiles(quantiles)
+    
     plt.figure(figsize=(12,6))
     np.random.seed(123) ## seed because the CIs from seaborn uses boostraping for inference
     sns.barplot(data=raw.assign(income_quantile=pd.qcut(raw["income"], q=quantiles)),  # pd.qcut create quantiles of a column
@@ -78,6 +88,8 @@ def plot_profit_by_income(raw, quantiles):
 
 def plot_profit_by_region(raw):
     """Plot net value by region"""
+    _fail_if_not_dataframe(raw)
+    
     plt.figure(figsize=(12,6))
     np.random.seed(123)
     sns.barplot(data=raw, x="region", y="net_value")
@@ -94,7 +106,9 @@ def lower_bound_CI(raw):
     
     Returns:
         dict: Dictionary of regions and their lower bound of the 95% CI
-    """    
+    """
+    _fail_if_not_dataframe(raw)
+    
     regions_to_net = raw.groupby('region')['net_value'].agg(['mean', 'count', 'std'])
     regions_to_net = regions_to_net.assign(
     lower_bound=regions_to_net['mean'] - 1.96*regions_to_net['std']/(regions_to_net['count']**0.5)
@@ -118,6 +132,9 @@ def plot_oos_performance(rawtest, regions):
     Returns:
         plot: Plot of the average net income in test data
     """
+    _fail_if_not_dataframe(rawtest)
+    _fail_if_not_dict(regions)
+    
     region_policy = (rawtest[rawtest["region"].isin(regions.keys())]) # filter regions in regions_to_invest                    
     sns.histplot(data=region_policy, x="net_value")
     # average has to be over all customers, not just the one we've filtered with the policy
@@ -129,6 +146,8 @@ def plot_oos_performance(rawtest, regions):
 #Encode the region variable
 def encode_region(df, regions_to_net):
     """"Encode regions with dictionary, check if "level_0" exists before trying to drop it"""
+    _fail_if_not_dataframe(df)
+    
     if "level_0" in df.columns:
         df = df.drop(columns="level_0")
     df['region'] = df['region'].map(regions_to_net)
@@ -149,6 +168,9 @@ def specify_gradient_boosting_regressor(df, n_estimators, max_depth, min_samples
     Returns:
         float: R2 score of the model
     """
+    _fail_if_not_dataframe(df)
+    _fail_if_irregular_learning_rate(learning_rate)
+    
     model_params = {'n_estimators': n_estimators,
                     'max_depth': max_depth,
                     'min_samples_split': min_samples_split,
@@ -167,6 +189,11 @@ def specify_gradient_boosting_regressor(df, n_estimators, max_depth, min_samples
 #Predict the net value
 def predict_net_value(raw_train, raw_test, reg, regions_to_net, model_features):
     """Predict the net value on the test data and calculate the R2 score"""
+    _fail_if_not_dataframe(raw_train)
+    _fail_if_not_dataframe(raw_test)
+    _fail_if_not_dataframe(model_features)
+    _fail_if_not_gradient_boost(reg)
+    
     features = ["region", "income", "age"]
     target = "net_value"
     train_pred = (model_features.assign(predictions=reg.predict(model_features[features])))
@@ -177,3 +204,26 @@ def predict_net_value(raw_train, raw_test, reg, regions_to_net, model_features):
     test = encode_region(raw_test, regions_to_net)
     model_policy = test.assign(predictions=reg.predict(test[features]))
     return model_policy, Train_R2, Test_R2
+
+
+###########################Fail Functions##############################################
+def _fail_if_not_dataframe(data):
+    if not isinstance(data, pd.DataFrame):
+        raise TypeError("data must be a dataframe, not %s" % type(data))
+    
+
+def _fail_if_too_many_quantiles(quantiles):
+    if quantiles > 100:
+        raise ValueError("Too many quantiles, please choose a number between 1 and 100")
+    
+def _fail_if_not_dict(regions):
+    if not isinstance(regions, dict):
+        raise TypeError("regions must be a dictionary, not %s" % type(regions))
+                        
+def _fail_if_irregular_learning_rate(learning_rate):
+    if learning_rate > 1 or learning_rate < 0:
+        raise ValueError("learning_rate must be between 0 and 1")
+    
+def _fail_if_not_gradient_boost(reg):
+    if not isinstance(reg, ensemble._gb.GradientBoostingRegressor):
+        raise TypeError("reg must be a Gradient Boosting Regressor, not %s" % type(reg))
