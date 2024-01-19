@@ -3,12 +3,12 @@
 # Import libraries
 import numpy as np
 import pandas as pd
-
 import matplotlib.pyplot as plt
 from matplotlib.pylab import rcParams
-
 rcParams["figure.figsize"] = 12, 10
 from sklearn.linear_model import Ridge, Lasso, LinearRegression
+
+from causalmachinelearning.lessons.__exceptions import _fail_if_not_dataframe, _fail_if_not_int, _fail_if_alpha_not_float_or_int
 
 
 ###################B.1 Linear Regression##############################################
@@ -100,7 +100,7 @@ def linear_regression_and_fill_coef_matrix(data, models_to_plot):
 def ridge_regression(data, predictors, alpha, models_to_plot={}):
     """Function for ridge regression"""
     _fail_if_not_dataframe(data)
-    _fail_if_alpha_not_float(alpha)
+    _fail_if_alpha_not_float_or_int(alpha)
     
     # Fit the model
     ridgereg = Ridge(alpha=alpha)
@@ -161,7 +161,7 @@ def ridge_regression_and_fill_coef_matrix(data):
 def lasso_regression(data, predictors, alpha, models_to_plot={}):
     """Function for lasso regression"""
     _fail_if_not_dataframe(data)
-    _fail_if_alpha_not_float(alpha)
+    _fail_if_alpha_not_float_or_int(alpha)
     
     # Fit the model
     lassoreg = Lasso(alpha=alpha, max_iter=100000)
@@ -216,17 +216,3 @@ def lasso_regression_and_fill_coef_matrix(data):
             data, predictors, alpha_lasso[i], models_to_plot
         )
     return coef_matrix_lasso
-
-
-###########################Fail Functions##############################################
-def _fail_if_not_dataframe(data):
-    if not isinstance(data, pd.DataFrame):
-        raise TypeError("data must be a dataframe, not %s" % type(data))
-    
-def _fail_if_not_int(power):
-    if not isinstance(power, int):
-        raise TypeError("power must be an integer, not %s" % type(power))
-    
-def _fail_if_alpha_not_float(alpha):
-    if not isinstance(alpha, float):
-        raise TypeError("alpha must be a float, not %s" % type(alpha))

@@ -59,7 +59,7 @@ def test_pred_sensitivity_shape_m1():
     with open(BLD / "python" / "Lesson_F" / "model" / "m1.pkl", "rb") as f:
         m1 = pickle.load(f)
     actual = pred_sensitivity(m1, test).shape
-    expected = (1500, 7)
+    expected = (1500, 7) 
     assert actual == expected
     
 def test_pred_sensitivity_shape_m3():

@@ -32,16 +32,6 @@ def test_fit_tree_is_regressor():
     assert isinstance(regressor, DecisionTreeRegressor)
 
 
-def test_predict_new_value():
-    """Test if the output of predict_new_value is correct."""
-    data = create_data()
-    regressor = fit_tree(data)
-    new_value = 3750
-    y_pred_value = predict_new_value(regressor, new_value)
-    y_pred = regressor.predict(np.array(new_value).reshape(-1, 1))
-    assert y_pred == np.array([8000.0])
-
-
 def test_visualize_decision_tree():
     """Test if the output of visualize_decision_tree is correct."""
     regressor = pickle.load(

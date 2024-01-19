@@ -17,6 +17,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.inspection import permutation_importance
 
+from causalmachinelearning.lessons.__exceptions import _fail_if_not_array, _fail_if_not_gradient_boost
 
 ####################E.1 Bagging ##############################################
 #As an example for a bagging technique, we will use Random Forests
@@ -38,13 +39,16 @@ def make_dataset():
 def decision_tree(X, y):
     """Fit simple decision tree model and calculate R2 score
     Args:
-        X np.array: features of model
-        y np.array: target of model
+        X (np.array): features of model
+        y (np.array): target of model
 
     Returns:
         tree_model: the fitted model
         r2: R2 score - R2_Train is 0.9811014350667862, so it is overfitting
     """
+    _fail_if_not_array(X)
+    _fail_if_not_array(y)
+    
     tree_model = tree.DecisionTreeRegressor(max_depth=5, random_state=None)
     tree_model.fit(X, y)
     # Calculate R2 score
@@ -57,13 +61,16 @@ def decision_tree(X, y):
 def random_forest(X, y):
     """Fit forest model and calculate R2 score
     Args:
-        X np.array: features of model
-        y np.array: target of model
+        X (np.array): features of model
+        y (np.array): target of model
 
     Returns:
         forest_model: the fitted model
         r2: R2 score R2_Train is 0.8649247897434318, we prevent overfitting
     """
+    _fail_if_not_array(X)
+    _fail_if_not_array(y)
+    
     forest_model = RandomForestRegressor(max_depth=5, random_state=None, max_leaf_nodes=5, n_estimators=100)
     forest_model.fit(X, y)
     y_pred = forest_model.predict(X)
@@ -95,6 +102,9 @@ def standardize_data(X_train, X_test):
         X_train_std (np.array): standardized features of training set
         X_test_std (np.array): standardized features of test set
     """
+    _fail_if_not_array(X_train)
+    _fail_if_not_array(X_test)
+    
     sc = StandardScaler()
     X_train_std = sc.fit_transform(X_train)
     X_test_std = sc.transform(X_test)
@@ -114,6 +124,11 @@ def gradient_boosting_and_accuracy(X_train_std, y_train, X_test_std, y_test):
         mse: mean squared error
         r2: R2 score
     """
+    _fail_if_not_array(X_train_std)
+    _fail_if_not_array(y_train)
+    _fail_if_not_array(X_test_std)
+    _fail_if_not_array(y_test)
+    
     gbr_params = {'n_estimators': 1000,
             'max_depth': 3,
             'min_samples_split': 5,
@@ -133,6 +148,10 @@ def gradient_boosting_and_accuracy(X_train_std, y_train, X_test_std, y_test):
 
 def determine_feature_importance(gbr, X_test_std, y_test):
     """Get Feature importance data using feature_importances_ attribute and plot it"""
+    _fail_if_not_array(X_test_std)
+    _fail_if_not_array(y_test)
+    _fail_if_not_gradient_boost(gbr)
+    
     ch = fetch_california_housing()
     feature_importance = gbr.feature_importances_
     sorted_idx = np.argsort(feature_importance)

@@ -10,7 +10,9 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from matplotlib import style
 style.use("ggplot")
-pd.options.mode.chained_assignment = None 
+pd.options.mode.chained_assignment = None
+
+from causalmachinelearning.lessons.__exceptions import _fail_if_not_dataframe, _fail_if_too_many_quantiles, _fail_if_not_dict, _fail_if_irregular_learning_rate, _fail_if_not_gradient_boost 
  
 ###################A.1 Cross Validation##############################################
 #Separate the good customers from the bad customers
@@ -204,26 +206,3 @@ def predict_net_value(raw_train, raw_test, reg, regions_to_net, model_features):
     test = encode_region(raw_test, regions_to_net)
     model_policy = test.assign(predictions=reg.predict(test[features]))
     return model_policy, Train_R2, Test_R2
-
-
-###########################Fail Functions##############################################
-def _fail_if_not_dataframe(data):
-    if not isinstance(data, pd.DataFrame):
-        raise TypeError("data must be a dataframe, not %s" % type(data))
-    
-
-def _fail_if_too_many_quantiles(quantiles):
-    if quantiles > 100:
-        raise ValueError("Too many quantiles, please choose a number between 1 and 100")
-    
-def _fail_if_not_dict(regions):
-    if not isinstance(regions, dict):
-        raise TypeError("regions must be a dictionary, not %s" % type(regions))
-                        
-def _fail_if_irregular_learning_rate(learning_rate):
-    if learning_rate > 1 or learning_rate < 0:
-        raise ValueError("learning_rate must be between 0 and 1")
-    
-def _fail_if_not_gradient_boost(reg):
-    if not isinstance(reg, ensemble._gb.GradientBoostingRegressor):
-        raise TypeError("reg must be a Gradient Boosting Regressor, not %s" % type(reg))

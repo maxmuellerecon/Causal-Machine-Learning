@@ -4,6 +4,8 @@ import numpy as np
 from lightgbm import LGBMRegressor
 from sklearn.model_selection import train_test_split
 
+from causalmachinelearning.lessons.__exceptions import _fail_if_not_dataframe, _fail_if_not_between_zero_and_one, _fail_if_not_LGBMRegressor
+
 ################################G.1 From Outcomes to treatment effects################################
 #From predicting outcomes to predicting treatment effects, called F-Learner
 #Works only for discrete or binary treatments
@@ -11,6 +13,9 @@ from sklearn.model_selection import train_test_split
 #Set up train and test
 def split_train_test(raw, size):
     """Split sample into train and test"""
+    _fail_if_not_dataframe(raw)
+    _fail_if_not_between_zero_and_one(size)
+    
     np.random.seed(123)
     train, test = train_test_split(raw, test_size=size)
     return train, test
@@ -27,6 +32,8 @@ def create_y_star(raw):
         y_star_train (DataFrame): y_star_train, the transformed outcome
         ps (float): propensity score
     """
+    _fail_if_not_dataframe(raw)
+    
     y = "converted"
     T = "em1"
     X = ["age", "income", "insurance", "invested"]
@@ -46,6 +53,9 @@ def train_model(tr_data, y_star_train):
     Returns:
         cate_learner (pkl): ML model that is trained
     """
+    _fail_if_not_dataframe(tr_data)
+    _fail_if_not_dataframe(y_star_train)
+    
     np.random.seed(123)
     X = ["age", "income", "insurance", "invested"]
     cate_learner = LGBMRegressor(max_depth=3, min_child_samples=300, num_leaves=5)
@@ -63,6 +73,9 @@ def predict_cate(test, cate_learner):
     Returns:
         test_pred (DataFrame): The test data with predicted cate
     """
+    _fail_if_not_dataframe(test)
+    _fail_if_not_LGBMRegressor(cate_learner)
+    
     #Predict cate for test data based on the trained model via boosted trees
     X = ["age", "income", "insurance", "invested"]
     test_pred = test.assign(cate=cate_learner.predict(test[X]))
@@ -73,6 +86,9 @@ def predict_cate(test, cate_learner):
 #Set up train and test
 def split_train_test_ice(raw, size):
     """Split sample into train and test"""
+    _fail_if_not_dataframe(raw)
+    _fail_if_not_between_zero_and_one(size)
+    
     np.random.seed(123)
     train, test = train_test_split(raw, test_size=size)
     return train, test
@@ -89,6 +105,9 @@ def predict_y_star_cont(tr_data, test_data):
     Returns:
         test_pred (DataFrame): test data with predicted y_star (CATE)
     """
+    _fail_if_not_dataframe(tr_data)
+    _fail_if_not_dataframe(test_data)
+    
     y_star_cont = ((tr_data["price"] - tr_data["price"].mean())
                *(tr_data["sales"] - tr_data["sales"].mean()))
     cate_learner = LGBMRegressor(max_depth=3, min_child_samples=300, num_leaves=5)

@@ -9,6 +9,7 @@ from matplotlib import pyplot as plt
 from matplotlib import style
 style.use("ggplot")
 
+from causalmachinelearning.lessons.__exceptions import _fail_if_not_dataframe
 
 ################################J.1 Two-way Fixed Effects################################
 #Create the data
@@ -43,6 +44,8 @@ def create_data():
 
 def plot_trend(data):
     """Plot trend of outcome variable"""
+    _fail_if_not_dataframe(data)
+    
     cohort_dates = pd.to_datetime(["2021-06-01", "2021-07-15", "2022-01-01"]).date
     plt.figure(figsize=(10, 4))
     [plt.vlines(x=cohort, ymin=9, ymax=15, color=color, ls="dashed") for color, cohort in zip(["C0", "C1"], cohort_dates[:-1])]
@@ -68,6 +71,8 @@ def twfe_regression(df):
         twfe_output (str): summary of regression
         twfe_model (statsmodels.regression.linear_model.RegressionResultsWrapper): regression model
     """
+    _fail_if_not_dataframe(df)
+    
     formula = f"""installs ~ treat + C(unit) + C(date)"""
     twfe_output = smf.ols(formula, data=df).fit().summary()
     twfe_model = smf.ols(formula, data=df).fit()
@@ -78,6 +83,8 @@ def twfe_regression(df):
 
 def plot_counterfactuals(df, twfe_model):
     """Plot counterfactuals (what happens, if they had not been treated)"""
+    _fail_if_not_dataframe(df)
+    
     df_pred = df.assign(**{"installs_hat_0": twfe_model.predict(df.assign(**{"treat":0}))})
     plt.figure(figsize=(10,4))
     cohorts = pd.to_datetime(["2021-06-01", "2021-07-15", "2022-01-01"]).date
@@ -111,6 +118,8 @@ def plot_counterfactuals(df, twfe_model):
 #Especially heterogeneous treatment effects over time
 def g_plot_data_fct(df):
     """Create data for plot"""
+    _fail_if_not_dataframe(df)
+    
     g_plot_data = (df
                     .groupby(["cohort", "date"])["installs"]
                     .mean()
@@ -122,6 +131,8 @@ def g_plot_data_fct(df):
 
 def plot_comparison(data):
     """Plot comparison of cohorts"""
+    _fail_if_not_dataframe(data)
+    
     cohorts = data["cohort"].unique()
     palette = dict(zip(map(str, cohorts), ["C0", "C1", "C2"]))
     fig, axs = plt.subplots(2, 2, figsize=(15, 8), sharex=True, sharey=True)
@@ -156,6 +167,8 @@ def plot_comparison(data):
 
 def fct_late_vs_early(df_heter):
     """Use data from 2021-06-01 to 2021-08-01 to compare late vs early"""
+    _fail_if_not_dataframe(df_heter)
+    
     late_vs_early = (df_heter
                     [df_heter["date"].astype(str)>="2021-06-01"]
                     [lambda d: d["cohort"].astype(str)<="2021-08-01"])
@@ -168,6 +181,8 @@ def fct_late_vs_early(df_heter):
 #Also including leads and lags does not solve the problem
 def plot_twfe_regression_late_vs_early(late_vs_early):
     """Plot TWFE regression for late vs early with counterfactual for late group"""
+    _fail_if_not_dataframe(late_vs_early)
+    
     formula = f"""installs ~ treat + C(date) + C(unit)"""
     twfe_model = smf.ols(formula, data=late_vs_early).fit()
     late_vs_early_pred = (late_vs_early
@@ -202,6 +217,8 @@ def plot_twfe_regression_late_vs_early(late_vs_early):
 ################################J.3 Flexible Functional Forms################################
 def twfe_regression_groups(df_heter):
     """Heterogeneous treatment effects by cohort/group"""
+    _fail_if_not_dataframe(df_heter)
+    
     formula = f"""installs ~ treat:C(cohort):C(date) + C(unit) + C(date)"""
     # for nicer plots latter on
     df_heter_str = df_heter.astype({"cohort": str, "date":str})
@@ -221,6 +238,8 @@ def check_trueATT_vs_predATT(df_heter_str, twfe_model_groups):
         tau_mean (float): mean of true ATT
         pred_effect_mean (float): mean of predicted ATT
     """
+    _fail_if_not_dataframe(df_heter_str)
+    
     df_pred = (df_heter_str
             .assign(**{"installs_hat_0": twfe_model_groups.predict(df_heter_str.assign(**{"treat":0}))})
             .assign(**{"effect_hat": lambda d: d["installs"] - d["installs_hat_0"]}))

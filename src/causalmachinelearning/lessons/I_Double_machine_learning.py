@@ -7,11 +7,16 @@ import statsmodels.formula.api as smf
 from lightgbm import LGBMRegressor
 from sklearn.model_selection import cross_val_predict
 
+from causalmachinelearning.lessons.__exceptions import _fail_if_not_dataframe, _fail_if_not_string
 
 # Positives: Works for continuous and binary treatments and has rigorous validity
 #####################I.1 Recap: Frisch-Waugh-Lovell Theorem########################
 def plot_pattern(df, x_var, y_var):
     """Plot pattern of data"""
+    _fail_if_not_dataframe(df)
+    _fail_if_not_string(x_var)
+    _fail_if_not_string(y_var)
+    
     np.random.seed(123)
     plot = sns.scatterplot(data=df.sample(1000), x=x_var, y=y_var, hue="weekday")
     return plot
@@ -26,6 +31,8 @@ def fwl_theorem(train):
     Returns:
         table1 (DataFrame): The regression table
     """
+    _fail_if_not_dataframe(train)
+    
     # FWL Theorem
     # 1.) Regress Outcome (Sales) on Covariates (Weekday, Temp, Cost)
     my = smf.ols("sales~temp+C(weekday)+cost", data=train).fit()
@@ -47,6 +54,8 @@ def fwl_theorem(train):
 
 def verify_fwl_theorem(train):
     """Verify that FWL is the same as usual regression: it is exactly the same (-4.004)"""
+    _fail_if_not_dataframe(train)
+    
     table2 = smf.ols("sales~price+temp+C(weekday)+cost", data=train).fit().summary()
     return table2
 
@@ -66,6 +75,8 @@ def verify_fwl_theorem(train):
 # 1.) Debias the treatment +3.) obtain residuals for t
 def debias_treatment(train):
     """Debias the treatment"""
+    _fail_if_not_dataframe(train)
+    
     # Define the ML model
     T = "price"
     X = ["temp", "weekday", "cost"]
@@ -82,6 +93,8 @@ def debias_treatment(train):
 
 def plot_debiased(df):
     """Visualize debiased treatment"""
+    _fail_if_not_dataframe(df)
+    
     np.random.seed(123)
     sns.scatterplot(data=df.sample(1000), x="price_res", y="sales", hue="weekday")
     return plt
@@ -90,6 +103,9 @@ def plot_debiased(df):
 # 2.) Reduce the variance from y +3.) obtain residuals for Y
 def denoise_outcome(train, train_pred):
     """Denoise the outcome"""
+    _fail_if_not_dataframe(train)
+    _fail_if_not_dataframe(train_pred)
+    
     Y = "sales"
     X = ["temp", "weekday", "cost"]
     denoise_m = LGBMRegressor(max_depth=3)
@@ -105,6 +121,8 @@ def denoise_outcome(train, train_pred):
 
 def plot_debiased_denoised(df):
     """Visualize debiased and denoised treatment"""
+    _fail_if_not_dataframe(df)
+    
     np.random.seed(123)
     sns.scatterplot(data=df.sample(1000), x="price_res", y="sales_res", hue="weekday")
     return plt
@@ -113,6 +131,9 @@ def plot_debiased_denoised(df):
 # 4.) Use the orthogonalized residuals to estimate the causal effect (ATE), get negative relationship
 def comparison_models(train_pred_y, train):
     """Compare the models"""
+    _fail_if_not_dataframe(train_pred_y)
+    _fail_if_not_dataframe(train)
+    
     final_model = smf.ols("sales_res~price_res", data=train_pred_y).fit().summary()
     # In coparison to unorthogonalized model, have positive relationship
     basic_model = smf.ols("sales~price", data=train).fit().summary()
@@ -122,6 +143,9 @@ def comparison_models(train_pred_y, train):
 # ######################I.3 Parametric Double ML CATE###############################################
 def parametric_double_ml_cate(train_pred_y, test):
     """Parametric in the second stage (still linear model), before fully interacted"""
+    _fail_if_not_dataframe(train_pred_y)
+    _fail_if_not_dataframe(test)
+    
     # #Now we want to produce the CATE, not the ATE, interact the residuals with the covariates
     final_model_cate = smf.ols(
         formula="sales_res ~ price_res * (temp + C(weekday) + cost)", data=train_pred_y
@@ -147,6 +171,8 @@ def orthogonalize_treatment_and_outcome(train):
     Returns:
         train_pred_nonparam (dataFrame): training data with orthogonalized treatment and outcome
     """
+    _fail_if_not_dataframe(train)
+    
     T = "price"
     X = ["temp", "weekday", "cost"]
     Y = "sales"
@@ -161,6 +187,9 @@ def orthogonalize_treatment_and_outcome(train):
 
 def non_parametric_double_ml_cate(train_pred_nonparam, test):
     """Non-parametric in the second stage."""
+    _fail_if_not_dataframe(train_pred_nonparam)
+    _fail_if_not_dataframe(test)
+    
     X = ["temp", "weekday", "cost"]
     # Define a causal loss function, that the R-learner minimizes
     model_final = LGBMRegressor(max_depth=3)

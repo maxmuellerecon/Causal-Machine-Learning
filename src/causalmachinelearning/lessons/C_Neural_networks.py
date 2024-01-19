@@ -8,12 +8,17 @@ from sklearn.preprocessing import StandardScaler
 from keras.layers import Dense, Dropout
 from keras.losses import MeanSquaredLogarithmicError
 
+from causalmachinelearning.lessons.__exceptions import _fail_if_not_dataframe, _fail_if_not_Sequential
+
 ####################C. Vanilla Neural Networks##############################################	
 #Positive: Non-parametric, can approximate any function, can be used for classification and regression
 #Negative: Can only handle structured data (supervised learning)
 
 def preprocess_data(train_data, test_data):
     """Preprocess data, split target and predictors"""
+    _fail_if_not_dataframe(train_data)
+    _fail_if_not_dataframe(test_data)
+    
     TARGET_NAME = 'median_house_value'
     x_train, y_train = train_data.drop(TARGET_NAME, axis=1), train_data[TARGET_NAME]
     x_test, y_test = test_data.drop(TARGET_NAME, axis=1), test_data[TARGET_NAME]
@@ -21,17 +26,20 @@ def preprocess_data(train_data, test_data):
 
 
 def scale_datasets(x_train, x_test):
-  """ Standard Scale test and train data  Z - Score normalization (substract each data from its mean and divides it by the standard deviation of the data), get faster convergence to global optimum"""
-  standard_scaler = StandardScaler()
-  x_train_scaled = pd.DataFrame(
-      standard_scaler.fit_transform(x_train),
-      columns=x_train.columns
-  )
-  x_test_scaled = pd.DataFrame(
-      standard_scaler.transform(x_test),
-      columns = x_test.columns
-  )
-  return x_train_scaled, x_test_scaled
+    """ Standard Scale test and train data  Z - Score normalization (substract each data from its mean and divides it by the standard deviation of the data), get faster convergence to global optimum"""
+    _fail_if_not_dataframe(x_train)
+    _fail_if_not_dataframe(x_test)
+    
+    standard_scaler = StandardScaler()
+    x_train_scaled = pd.DataFrame(
+        standard_scaler.fit_transform(x_train),
+        columns=x_train.columns
+    )
+    x_test_scaled = pd.DataFrame(
+        standard_scaler.transform(x_test),
+        columns = x_test.columns
+    )
+    return x_train_scaled, x_test_scaled
 
 
 # Creating model using the Sequential in tensorflow-keras
@@ -67,6 +75,10 @@ def compile_and_train_model(model, x_train_scaled, y_train):
     Returns:
         history: The history of the training
     """
+    _fail_if_not_dataframe(x_train_scaled)
+    _fail_if_not_dataframe(y_train)
+    _fail_if_not_Sequential(model)
+    
     learning_rate = 0.01
     msle = MeanSquaredLogarithmicError()
     model.compile(
@@ -87,12 +99,18 @@ def compile_and_train_model(model, x_train_scaled, y_train):
 
 def predict_house_value(model, x_test_scaled, x_test):
     """Predict house value using the model and safe it in the testing data"""
+    _fail_if_not_dataframe(x_test_scaled)
+    _fail_if_not_dataframe(x_test)
+    
     x_test['prediction'] = model.predict(x_test_scaled)
     return x_test
 
 
 def assess_performance(x_test_pred, y_test):
     """Assess the performance of the model, by calculating the root mean squared error"""
+    _fail_if_not_dataframe(x_test_pred)
+    _fail_if_not_dataframe(y_test)
+    
     rmse = math.sqrt(
         sum((x_test_pred['prediction'] - y_test["median_house_value"])**2) / len(x_test_pred)
     )

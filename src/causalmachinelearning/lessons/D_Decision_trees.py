@@ -6,6 +6,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.tree import export_graphviz
 import graphviz
 
+from causalmachinelearning.lessons.__exceptions import _fail_if_not_dataframe, _fail_if_not_int, _fail_if_not_DecisionTreeRegressor, _fail_if_not_list, _fail_if_not_array
 
 ####################D. Decision Trees for Regression##############################################
 # Supervised learning algorithm used for regression
@@ -49,6 +50,8 @@ def preprocess_data(dataset):
 
         dataset (pd.DataFrame): The data in a shape usable for the tree algorithm
     """
+    _fail_if_not_array(dataset)
+    
     # Convert non-numeric columns to numeric
     for i in range(dataset.shape[1]):
         try:
@@ -57,7 +60,7 @@ def preprocess_data(dataset):
             # Handle non-numeric values (e.g., 'Asset Flip') by assigning them a default value (0 in this case)
             dataset[:, i] = 0
     return dataset
-
+ 
 
 def fit_tree(dataset):
     """Fit tree
@@ -68,6 +71,8 @@ def fit_tree(dataset):
     Returns:
         regressor (DecisionTreeRegressor): The fitted tree
     """
+    _fail_if_not_dataframe(dataset)
+    
     dataset = np.array(dataset)
     dataset = preprocess_data(dataset)
     X = dataset[:, 1].reshape(-1, 1)
@@ -76,7 +81,7 @@ def fit_tree(dataset):
     regressor = DecisionTreeRegressor(random_state=0)
     # fit the regressor with X and Y data
     regressor.fit(X, y)
-    return regressor
+    return regressor 
 
 
 def predict_new_value(regressor, new_value):
@@ -89,6 +94,9 @@ def predict_new_value(regressor, new_value):
     Returns:
         y_pred (int): The predicted value
     """
+    _fail_if_not_int(new_value)
+    _fail_if_not_DecisionTreeRegressor(regressor)
+    
     y_pred = regressor.predict([[new_value]])
     print("Predicted price: % d\n" % y_pred)
     return y_pred
@@ -103,6 +111,9 @@ def visualize_decision_tree(regressor, feature_names):
     Returns:
         graph (graphviz.Source): The plotted tree
     """
+    _fail_if_not_DecisionTreeRegressor(regressor)
+    _fail_if_not_list(feature_names)
+    
     dot_data = export_graphviz(
         regressor,
         out_file=None,

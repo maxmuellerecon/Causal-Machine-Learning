@@ -64,6 +64,15 @@ J. Diff and Diff and ML \
 &nbsp;&nbsp; J.2 Time Treatment Heterogeneity \
 &nbsp;&nbsp; J.3 Flexible Functional Forms 
 
+## Libraries
+
+In addition to the pre-installed libraries in the epp environment, the following libraries are used:
+
+- keras
+- tensorflow
+- lightgbm
+- 
+
 
 ## Credits
 

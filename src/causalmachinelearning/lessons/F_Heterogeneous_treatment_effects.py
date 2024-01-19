@@ -9,6 +9,7 @@ import statsmodels.formula.api as smf
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import train_test_split
 
+from causalmachinelearning.lessons.__exceptions import _fail_if_not_dataframe, _fail_if_not_string, _fail_if_not_gradient_boost
 
 ############################F.1 Linear regression analysis##############################################
 #Goal: Predict when to charge more for ice cream, depending on temperature, weekday and cost
@@ -23,6 +24,8 @@ def split_data(data):
         train: training data
         test: testing data
     """
+    _fail_if_not_dataframe(data)
+    
     np.random.seed(123)
     train, test = train_test_split(data, test_size=0.3)
     return train, test
@@ -42,6 +45,8 @@ def regressions_three(train):
         latex_code2 (str): latex code for table 2
         latex_code3 (str): latex code for table 3
     """
+    _fail_if_not_dataframe(train)
+    
     #Linear regression
     m1 = smf.ols("sales ~ price + temp+C(weekday)+cost", data=train).fit() #Include the C to make it categorical
     table1 = m1.summary().tables[1]
@@ -75,12 +80,15 @@ def pred_sensitivity(m, df, t="price"):
 
     Args:
         m (LinearRegression): model to be used
-        df (data): testing data on which to predict
+        df (pd.dataFrame): testing data on which to predict
         t (str, optional): Variable to predict. Defaults to "price".
 
     Returns:
         DataFrame: Data frame with predicted sensitivity
     """
+    _fail_if_not_dataframe(df)
+    _fail_if_not_string(t)
+    
     return df.assign(**{
         "pred_sens": m.predict(df.assign(**{t:df[t]+1})) - m.predict(df)
     })
@@ -92,12 +100,15 @@ def ml_model(train, test):
     """ML Model using price, temp, weekday and cost to predict sales
 
     Args:
-        train (data): training data
-        test (data): testing data
+        train (pd.dataFrame): training data
+        test (pd.dataFrame): testing data
 
     Returns:
         ml (ML): ML model
     """
+    _fail_if_not_dataframe(train)
+    _fail_if_not_dataframe(test)
+    
     X = ["price", "temp", "weekday", "cost"]
     Y = ["sales"]
     m4 = GradientBoostingRegressor()
@@ -119,6 +130,9 @@ def comparison(regr_data, ml_model, groups):
     Returns:
         bands_df (DataFrame): Data frame with predicted sensitivity
     """
+    _fail_if_not_dataframe(regr_data)
+    _fail_if_not_gradient_boost(ml_model)
+    
     X = ["price", "temp", "weekday", "cost"]
     bands_df = regr_data.assign(
         sens_band = pd.qcut(regr_data["pred_sens"], groups), # create two groups based on sensitivity predictions 
@@ -130,6 +144,8 @@ def comparison(regr_data, ml_model, groups):
 
 def plot_regr_model(data):
     """Plot the regression model - second partition, sales are not as sensitive to price changes as for the first partition"""
+    _fail_if_not_dataframe(data)
+    
     g = sns.FacetGrid(data, col="sens_band")
     g.map_dataframe(sns.regplot, x="price", y="sales")
     g.set_titles(col_template="Sens. Band {col_name}")
@@ -138,7 +154,9 @@ def plot_regr_model(data):
 
 def plot_ml_model(data):
     """Plot the ML model - Here elasticity is about the same for both groups"""
+    _fail_if_not_dataframe(data)
+    
     g = sns.FacetGrid(data, col="pred_band")
     g.map_dataframe(sns.regplot, x="price", y="sales")
-    g.set_titles(col_template="Pred. Band {col_name}");
+    g.set_titles(col_template="Pred. Band {col_name}")
     return plt

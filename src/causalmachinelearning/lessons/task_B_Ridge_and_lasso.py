@@ -5,7 +5,7 @@ import pytask
 
 from causalmachinelearning.config import BLD
 from causalmachinelearning.lessons.B_Ridge_and_lasso import create_data, plot_data, linear_regression_and_fill_coef_matrix, ridge_regression_and_fill_coef_matrix, lasso_regression_and_fill_coef_matrix
-
+ 
 
 def task_create_data(
     produces={
@@ -38,6 +38,7 @@ def task_linear_regression_and_fill_coef_matrix(
     coef_matrix = linear_regression_and_fill_coef_matrix(data, {1: 231, 3: 232, 6: 233, 9: 234, 12: 235, 15: 236})
     coef_matrix.to_csv(produces)
     
+    
 @pytask.mark.filterwarnings("ignore")
 def task_ridge_regression_and_fill_coef_matrix(
     depends_on=BLD / "python" / "Lesson_B" / "data" / "data.csv",
@@ -47,6 +48,7 @@ def task_ridge_regression_and_fill_coef_matrix(
     data = pd.read_csv(depends_on)
     coef_matrix_ridge = ridge_regression_and_fill_coef_matrix(data)
     coef_matrix_ridge.to_csv(produces)
+    
     
 @pytask.mark.filterwarnings("ignore")  
 def task_lasso_regression_and_fill_coef_matrix(
