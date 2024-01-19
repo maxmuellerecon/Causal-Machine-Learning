@@ -71,8 +71,11 @@ In addition to the pre-installed libraries in the epp environment, the following
 - keras
 - tensorflow
 - lightgbm
-- 
-
+- scikit-learn
+- graphviz
+- linearmodels
+- seaborn
+- statsmodels
 
 ## Credits
 
