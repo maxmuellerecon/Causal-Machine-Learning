@@ -20,7 +20,7 @@ $ pytask
 
 This contains the code for the final project of the "EPP" course at the University of Bonn. \
 However, this repository is also a starting point for people interested in causal machine learning in python. \
-The first half of the project is dedicated to machine learning in general. The second half focuses on causal machine learning. \
+The first half of the project is dedicated to machine learning in general. The second half focuses on causal machine learning.
 
 ## Structure
 

@@ -1,6 +1,7 @@
-#Test file for F_Heterogeneous_treatment_effects
+# Test file for F_Heterogeneous_treatment_effects
 
 import pytest
+
 pytestmark = pytest.mark.filterwarnings("ignore")
 import pandas as pd
 from sklearn.ensemble import GradientBoostingRegressor
@@ -8,7 +9,34 @@ import pickle
 from matplotlib import pyplot as plt
 
 from causalmachinelearning.config import BLD, SRC
-from causalmachinelearning.lessons.F_Heterogeneous_treatment_effects import split_data, regressions_three, pred_sensitivity, ml_model, comparison, plot_regr_model, plot_ml_model
+from causalmachinelearning.lessons.F_Heterogeneous_treatment_effects import (
+    split_data,
+    regressions_three,
+    pred_sensitivity,
+    ml_model,
+    comparison,
+    plot_regr_model,
+    plot_ml_model,
+)
+
+
+def test_split_data_shape_sample_train():
+    """Test split data shape for train data."""
+    data = pd.DataFrame({"col1": [1, 2, 3], "col2": [4, 5, 6]})
+    train, test = split_data(data)
+    actual = train.shape
+    expected = (2, 2)
+    assert actual == expected
+
+
+def test_split_data_shape_sample_test():
+    """Test split data shape for test data."""
+    data = pd.DataFrame({"col1": [1, 2, 3], "col2": [4, 5, 6]})
+    train, test = split_data(data)
+    actual = test.shape
+    expected = (1, 2)
+    assert actual == expected
+
 
 def test_split_data_shape_train():
     """Test split data shape."""
@@ -18,6 +46,7 @@ def test_split_data_shape_train():
     expected = (3500, 5)
     assert actual == expected
 
+
 def test_split_data_shape_test():
     """Test split data shape."""
     data = pd.read_csv(SRC / "data" / "ice_cream_sales_rnd.csv")
@@ -25,7 +54,8 @@ def test_split_data_shape_test():
     actual = test.shape
     expected = (1500, 5)
     assert actual == expected
-    
+
+
 def test_regressions_three_number_params_m1():
     """Test regressions three shape for m1."""
     data = pd.read_csv(SRC / "data" / "ice_cream_sales_rnd.csv")
@@ -34,7 +64,8 @@ def test_regressions_three_number_params_m1():
     actual = m1.params.shape
     expected = (10,)
     assert actual == expected
-    
+
+
 def test_regressions_three_number_params_m2():
     """Test regressions three shape for m2."""
     data = pd.read_csv(SRC / "data" / "ice_cream_sales_rnd.csv")
@@ -43,7 +74,8 @@ def test_regressions_three_number_params_m2():
     actual = m2.params.shape
     expected = (11,)
     assert actual == expected
-    
+
+
 def test_regressions_three_number_params_m3():
     """Test regressions three shape for m3."""
     data = pd.read_csv(SRC / "data" / "ice_cream_sales_rnd.csv")
@@ -52,16 +84,18 @@ def test_regressions_three_number_params_m3():
     actual = m3.params.shape
     expected = (18,)
     assert actual == expected
-    
+
+
 def test_pred_sensitivity_shape_m1():
     """Test pred sensitivity shape."""
     test = pd.read_csv(BLD / "python" / "Lesson_F" / "data" / "test.csv")
     with open(BLD / "python" / "Lesson_F" / "model" / "m1.pkl", "rb") as f:
         m1 = pickle.load(f)
     actual = pred_sensitivity(m1, test).shape
-    expected = (1500, 7) 
+    expected = (1500, 7)
     assert actual == expected
-    
+
+
 def test_pred_sensitivity_shape_m3():
     """Test pred sensitivity shape."""
     test = pd.read_csv(BLD / "python" / "Lesson_F" / "data" / "test.csv")
@@ -70,22 +104,69 @@ def test_pred_sensitivity_shape_m3():
     actual = pred_sensitivity(m3, test).shape
     expected = (1500, 7)
     assert actual == expected
-    
+
+
 def test_ml_model_type_of_ml_model():
-    """Test ml model type"""
+    """Test ml model type."""
     train = pd.read_csv(BLD / "python" / "Lesson_F" / "data" / "train.csv")
     test = pd.read_csv(BLD / "python" / "Lesson_F" / "data" / "test.csv")
     model = ml_model(train, test)
     assert isinstance(model, GradientBoostingRegressor)
-    
+
+
 def test_ml_model():
-    """Test ml model n_estimators"""
+    """Test ml model n_estimators."""
     train = pd.read_csv(BLD / "python" / "Lesson_F" / "data" / "train.csv")
     test = pd.read_csv(BLD / "python" / "Lesson_F" / "data" / "test.csv")
     model = ml_model(train, test)
     actual = model.get_params()["n_estimators"]
     expected = 100
     assert actual == expected
+
+
+def test_comparison_sample_shape():
+    """Test comparison shape."""
+    regr_data = pd.DataFrame(
+        {
+            "pred_sens": [0.1, 0.2, 0.3, 0.4, 0.5],
+            "price": [10, 20, 30, 40, 50],
+            "temp": [25, 30, 35, 40, 45],
+            "weekday": [1, 2, 3, 4, 5],
+            "cost": [5, 10, 15, 20, 25],
+        }
+    )
+    ml_model = GradientBoostingRegressor()
+    ml_model.fit(
+        regr_data[["price", "temp", "weekday", "cost"]], regr_data["pred_sens"]
+    )
+    groups = 2
+    bands_df = comparison(regr_data, ml_model, groups)
+    actual = bands_df.shape
+    expected = (5, 8)
+    assert actual == expected
+
+
+def test_comparison_sample_number_bands():
+    """Test comparison number of bands."""
+    regr_data = pd.DataFrame(
+        {
+            "pred_sens": [0.1, 0.2, 0.3, 0.4, 0.5],
+            "price": [10, 20, 30, 40, 50],
+            "temp": [25, 30, 35, 40, 45],
+            "weekday": [1, 2, 3, 4, 5],
+            "cost": [5, 10, 15, 20, 25],
+        }
+    )
+    ml_model = GradientBoostingRegressor()
+    ml_model.fit(
+        regr_data[["price", "temp", "weekday", "cost"]], regr_data["pred_sens"]
+    )
+    groups = 2
+    bands_df = comparison(regr_data, ml_model, groups)
+    actual = bands_df["sens_band"].nunique()
+    expected = 2
+    assert actual == expected
+
 
 def test_comparison_shape():
     """Test comparison shape."""
@@ -96,6 +177,7 @@ def test_comparison_shape():
     expected = (1500, 11)
     assert actual == expected
 
+
 def test_comparison_number_bands():
     regr_data = pd.read_csv(BLD / "python" / "Lesson_F" / "data" / "pred_sens_m3.csv")
     with open(BLD / "python" / "Lesson_F" / "model" / "m4.pkl", "rb") as f:
@@ -104,13 +186,15 @@ def test_comparison_number_bands():
     actual = bands_df["sens_band"].nunique()
     expected = 2
     assert actual == expected
-    
+
+
 def test_plot_regr_model_plot_type():
     """Test plot regr model plot type."""
     regr_data = pd.read_csv(BLD / "python" / "Lesson_F" / "data" / "bands_df.csv")
     plot = plot_regr_model(regr_data)
     assert not isinstance(plot, plt.Axes)
-    
+
+
 def test_plot_ml_model_plot_type():
     """Test plot ml model plot type."""
     regr_data = pd.read_csv(BLD / "python" / "Lesson_F" / "data" / "bands_df.csv")
