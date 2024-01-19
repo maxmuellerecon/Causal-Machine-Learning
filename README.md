@@ -19,14 +19,15 @@ $ pytask
 ## Description
 
 This contains the code for the final project of the "EPP" course at the University of Bonn. \
-However, this repository is also a starting point for people interested in causal machine learning in python.
+However, this repository is also a starting point for people interested in causal machine learning in python. \
+The first half of the project is dedicated to machine learning in general. The second half focuses on causal machine learning. \
 
 ## Structure
 
-The class is structured as follows: 
+The class is structured as follows:
 
-##### Part 1: Introduction to Machine Learning 
- 
+##### Part 1: Introduction to Machine Learning
+
 A. Machine Learning Basics \
 &nbsp;&nbsp; A.1. Cross Validation \
 &nbsp;&nbsp; A.2. Motivating Example: Gradient Boosting Regressor \
@@ -41,7 +42,7 @@ E. Ensemble Learning \
 &nbsp;&nbsp; E.2 Boosting
 
 
-##### Part 2: Causal Machine Learning 
+##### Part 2: Causal Machine Learning
 
 F. Heterogeneous Treatment Effects \
 &nbsp;&nbsp; F.1 Linear regression analysis \
@@ -62,7 +63,7 @@ I. Double ML \
 J. Diff and Diff and ML \
 &nbsp;&nbsp; J.1 J.1 Two-way Fixed Effects \
 &nbsp;&nbsp; J.2 Time Treatment Heterogeneity \
-&nbsp;&nbsp; J.3 Flexible Functional Forms 
+&nbsp;&nbsp; J.3 Flexible Functional Forms
 
 ## Libraries
 
