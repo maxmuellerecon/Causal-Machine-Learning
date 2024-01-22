@@ -1,4 +1,4 @@
-# causalmachinelearning
+# Causalmachinelearning
 
 [![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -89,7 +89,6 @@ In addition to the pre-installed libraries in the epp environment, the following
 | YAML     | 3     | 0     | 39      | 125    |
 | TOML     | 1     | 11    | 0       | 38     |
 | JSON     | 1     | 0     | 0       | 1      |
-|----------|-------|-------|---------|--------|
 | SUM:     | 77    | 1124  | 838     | 5033   |
 
 
