@@ -1,6 +1,5 @@
 # causalmachinelearning
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/maxmuellerecon/causalmachinelearning/main.svg)](https://results.pre-commit.ci/latest/github/maxmuellerecon/causalmachinelearning/main)
 [![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Usage
@@ -77,6 +76,24 @@ In addition to the pre-installed libraries in the epp environment, the following
 - linearmodels
 - seaborn
 - statsmodels
+
+
+## Code statistics
+
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Python                          39            936            782           3531
+TeX                             11            112             17           1054
+Markdown                         7             64              0            154
+Text                            15              1              0            130
+YAML                             3              0             39            125
+TOML                             1             11              0             38
+JSON                             1              0              0              1
+-------------------------------------------------------------------------------
+SUM:                           129           1124            880         322682
+-------------------------------------------------------------------------------
+
 
 ## Credits
 
