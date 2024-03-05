@@ -143,7 +143,7 @@ def propensity_score_model(train_data):
 
     T = "em1"
     X = ["age", "income", "insurance", "invested"]
-    g = LogisticRegression(solver="lbfgs", penalty="none")
+    g = LogisticRegression(solver="lbfgs")
     g.fit(train_data[X], train_data[T])
     return g
 
