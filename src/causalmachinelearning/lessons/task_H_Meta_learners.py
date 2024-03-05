@@ -40,16 +40,8 @@ def task_s_learner_predict(
         "s_learner": BLD / "python" / "Lesson_H" / "model" / "s_learner.pkl",
     },
     produces={
-        "s_learner_cate_train": BLD
-        / "python"
-        / "Lesson_H"
-        / "data"
-        / "s_learner_cate_train.npy",
-        "s_learner_cate_test": BLD
-        / "python"
-        / "Lesson_H"
-        / "data"
-        / "s_learner_cate_test.csv",
+        "s_learner_cate_train": BLD / "python" / "Lesson_H" / "data" / "s_learner_cate_train.npy",
+        "s_learner_cate_test": BLD / "python" / "Lesson_H" / "data" / "s_learner_cate_test.csv",
     },
 ):
     """Predict the cate for the train and test set."""
@@ -67,11 +59,7 @@ def task_s_learner_predict(
 def task_evaluate_model(
     depends_on={
         "test": SRC / "data" / "invest_email_rnd.csv",
-        "s_learner_cate_test": BLD
-        / "python"
-        / "Lesson_H"
-        / "data"
-        / "s_learner_cate_test.csv",
+        "s_learner_cate_test": BLD / "python" / "Lesson_H" / "data" / "s_learner_cate_test.csv",
     },
     produces={
         "mse": BLD / "python" / "Lesson_H" / "model_fit" / "mse.txt",
@@ -114,16 +102,8 @@ def task_t_learner_cate(
         "t_m1": BLD / "python" / "Lesson_H" / "model" / "t_m1.pkl",
     },
     produces={
-        "t_learner_cate_train": BLD
-        / "python"
-        / "Lesson_H"
-        / "data"
-        / "t_learner_cate_train.npy",
-        "t_learner_cate_test": BLD
-        / "python"
-        / "Lesson_H"
-        / "data"
-        / "t_learner_cate_test.csv",
+        "t_learner_cate_train": BLD / "python" / "Lesson_H" / "data" / "t_learner_cate_train.npy",
+        "t_learner_cate_test": BLD / "python" / "Lesson_H" / "data" / "t_learner_cate_test.csv",
     },
 ):
     """Predict the cate for the train and test set."""
@@ -207,16 +187,8 @@ def task_apply_ps_predict(
         "x2_m1": BLD / "python" / "Lesson_H" / "model" / "x2_m1.pkl",
     },
     produces={
-        "x_learner_cate_test": BLD
-        / "python"
-        / "Lesson_H"
-        / "data"
-        / "x_learner_cate_test.csv",
-        "x_learner_cate_train": BLD
-        / "python"
-        / "Lesson_H"
-        / "data"
-        / "x_learner_cate_train.npy",
+        "x_learner_cate_test": BLD / "python" / "Lesson_H" / "data" / "x_learner_cate_test.csv",
+        "x_learner_cate_train": BLD / "python" / "Lesson_H" / "data" / "x_learner_cate_train.npy",
     },
 ):
     """Use the propensity score model to predict the cate."""
