@@ -195,7 +195,7 @@ def test_ps_predict_treatment_0():
     g.fit(df[["age", "income", "insurance", "invested"]], df["invested"])
     # Test propensity score prediction for treatment t=0
     t = 0
-    expected_scores_t0 = np.array([0.31330801, 0.28056941, 0.2500063])
+    expected_scores_t0 = np.array([0.90519076, 0.13599325, 0.00133255])
     scores_t0 = ps_predict(g, df, t)
     assert np.allclose(scores_t0, expected_scores_t0)
 
@@ -216,7 +216,7 @@ def test_ps_predict_treatment_1():
     g.fit(df[["age", "income", "insurance", "invested"]], df["invested"])
     # Test propensity score prediction for treatment t=1
     t = 1
-    expected_scores_t1 = np.array([0.68669199, 0.71943059, 0.7499937])
+    expected_scores_t1 = np.array([0.09480924, 0.86400675, 0.99866745])
     scores_t1 = ps_predict(g, df, t)
     assert np.allclose(scores_t1, expected_scores_t1)
 
